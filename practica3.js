@@ -18,7 +18,7 @@ var game = function () {
 
 
 
-    Q.load("mario_small.png, mario_small.json, goomba.png, goomba.json, tiles.png, bloopa.json, bloopa.png, princess.png, title-screen.png, coin.png, coin.json, music_main.mp3, music_main.ogg,coin.mp3, coin.ogg,music_die.mp3, music_die.ogg, music_level_complete.mp3, music_level_complete.ogg, squish_enemy.mp3, squish_enemy.ogg", function () {
+    Q.load("buttonHard.png, buttonEasy.png, buttonMedio.png, mario_small.png, mario_small.json, goomba.png, goomba.json, tiles.png, bloopa.json, bloopa.png, princess.png, hospital.png, coin.png, coin.json, music_main.mp3, music_main.ogg,coin.mp3, coin.ogg,music_die.mp3, music_die.ogg, music_level_complete.mp3, music_level_complete.ogg, squish_enemy.mp3, squish_enemy.ogg", function () {
         // Sprites sheets can be created manually
         Q.sheet("tiles", "tiles.png", {
             tilew: 32,
@@ -67,15 +67,15 @@ var game = function () {
             }
         });
 
-        
+
         Q.Sprite.extend("Player", {
 
             init: function (p) {
                 this._super(p, {
                     sprite: "player_anim",
-                    sheet: "marioR", 
-                    x: 50, 
-                    y: 380, 
+                    sheet: "marioR",
+                    x: 50,
+                    y: 380,
                     dead: false
                 });
                 this.add('2d, platformerControls, animation');
@@ -123,7 +123,7 @@ var game = function () {
                             label: "You Died"
                         });
 
-                  
+
                     }
                 });
                 this.entity.on("bump.top", function (collision) {
@@ -168,9 +168,9 @@ var game = function () {
 
                 this._super(p, {
                     sprite: "goomba_anim",
-                    sheet: "goomba", 
-                    x: p.x, 
-                    y: p.y, 
+                    sheet: "goomba",
+                    x: p.x,
+                    y: p.y,
                     vx: 40,
                     dead: false
                 });
@@ -204,9 +204,9 @@ var game = function () {
             init: function (p) {
                 this._super(p, {
                     sprite: "bloopa_anim",
-                    sheet: "bloopa", 
-                    x: p.x, 
-                    y: p.y, 
+                    sheet: "bloopa",
+                    x: p.x,
+                    y: p.y,
                     vy: -10,
                     move: 'up',
                     dead: false,
@@ -276,11 +276,11 @@ var game = function () {
                                 y: this.p.y - 100
                             },
                                 1, Q.Easing.Quadratic.Linear, {
-                                    callback: () => {
-                                        this.destroy();
-                                        Q.state.inc("score", 1);
-                                    }
-                                });
+                                callback: () => {
+                                    this.destroy();
+                                    Q.state.inc("score", 1);
+                                }
+                            });
                         }
                     }
                 });
@@ -403,7 +403,7 @@ var game = function () {
         });
 
 
-        Q.compileSheets("title-screen.png");
+        Q.compileSheets("buttonMedio.png", "buttonEasy.png", "buttonHard.png");
 
         Q.scene("title-screen", function (stage) {
             var container = stage.insert(new Q.UI.Container({
@@ -414,14 +414,14 @@ var game = function () {
                 fill: "rgba(0,0,0,0.5)"
             }));
 
-            var button = container.insert(new Q.UI.Button({
-                asset: 'title-screen.png',
+            var buttonEasy = container.insert(new Q.UI.Button({
+                asset: "buttonEasy.png",
+                label: "Nivel Fácil",
+                y: -100,
                 x: 0,
-                y: 0,
-                fill: "#CCCCCC",
+                fill: "#1C00ff00"
             }));
-
-            button.on("click", function () {
+            buttonEasy.on("click", function () {
                 Q.clearStages();
                 Q.stageScene('hud', 1);
                 Q.stageScene('level1');
@@ -430,6 +430,42 @@ var game = function () {
                 });
 
             });
+            var buttonMedio = container.insert(new Q.UI.Button({
+                asset: "buttonMedio.png",
+                label: "Nivel Normal",
+                y: 0,
+                x: 0,
+                fill: "#1C00ff00"
+                
+            }));
+            buttonMedio.on("click", function () {
+                Q.clearStages();
+                Q.stageScene('hud', 1);
+                Q.stageScene('level1');
+                Q.audio.play('music_main.mp3', {
+                    loop: true
+                });
+
+            });
+
+            var buttonDificil = container.insert(new Q.UI.Button({
+                asset: "buttonHard.png",
+                label: "Nivel Difícil",
+                y: 100,
+                x: 0,
+                fill: "#1C00ff00"
+                
+            }));
+            buttonDificil.on("click", function () {
+                Q.clearStages();
+                Q.stageScene('hud', 1);
+                Q.stageScene('level1');
+                Q.audio.play('music_main.mp3', {
+                    loop: true
+                });
+
+            });
+
 
             Q.input.on('fire', this, () => {
                 Q.clearStages();
@@ -460,7 +496,7 @@ var game = function () {
             stage.insert(new Q.Score());
         })
 
-       
+
         Q.scene("level1", function (stage) {
             Q.stageTMX("level.tmx", stage);
             // Create the player and add them to the stage
@@ -469,12 +505,12 @@ var game = function () {
             stage.add("viewport").follow(player, {
                 x: true,
                 y: false
-            }); 
+            });
             stage.insert(new Q.Princess());
-        
+
         });
 
-        
+
 
         Q.loadTMX("level.tmx", function () {
             Q.state.reset({
