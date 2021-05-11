@@ -34,9 +34,9 @@
   </tile>
  </tileset>
  <imagelayer id="1" name="background" offsetx="-3.88313" offsety="3.88313">
-  <image source="../images/bg.png" width="800" height="600"/>
+  <image source="../images/fondoHospital1.jpg" width="1492" height="780"/>
  </imagelayer>
- <layer id="3" name="Background" width="120" height="18">
+ <!-- <layer id="3" name="Background" width="120" height="18" visible="0">
   <data>
    <tile/>
    <tile/>
@@ -2199,7 +2199,7 @@
    <tile/>
    <tile/>
   </data>
- </layer>
+ </layer> -->
  <layer id="2" name="Collision" width="120" height="18">
   <properties>
    <property name="collision" value="true"/>
