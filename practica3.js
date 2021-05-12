@@ -9,9 +9,11 @@ var game = function () {
         .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX,Audio")
         // Maximize this game to whatever the size of the browser is
         .setup({
-            scaleToFit: true,
-            width: 1200,
-            height: 800
+             maximize:true,
+             scaleToFit: true,
+             width: 1200,
+             height: 800
+
         })
         // And turn on default input controls and touch input (for UI)
         .controls().touch().enableSound();
@@ -19,11 +21,8 @@ var game = function () {
 
 
     Q.load("buttonHard.png, buttonEasy.png, buttonMedio.png, mario_small.png, mario_small.json, goomba.png, goomba.json, tiles.png, bloopa.json, bloopa.png, princess.png, hospital.png, coin.png, coin.json, music_main.mp3, music_main.ogg,coin.mp3, coin.ogg,music_die.mp3, music_die.ogg, music_level_complete.mp3, music_level_complete.ogg, squish_enemy.mp3, squish_enemy.ogg", function () {
-        // Sprites sheets can be created manually
-        Q.sheet("tiles", "tiles.png", {
-            tilew: 32,
-            tileh: 32
-        });
+        
+     
         // Or from a .json asset that defines sprite locations
         Q.compileSheets("mario_small.png", "mario_small.json");
         Q.animations('player_anim', {
@@ -67,113 +66,46 @@ var game = function () {
             }
         });
 
-        Q.gravityY = 428,
-        Q.groundY = 200,
-        Q.flyHeight = 140,
-        Q.upRotationSpeed = .25,
-        Q.downRotationSpeed = .4,
-        Q.pipes = []
 
         Q.Sprite.extend("Player", {
 
-            init: function(p) {
-                //var colors = ['yellow', 'red', 'blue'];
-                
+            init: function (p) {
                 this._super(p, {
-                    sprite: 'player_anim',
+                    sprite: "player_anim",
                     sheet: "marioR",
-                    y: Q.height / 2,
-                    z: 2,
-                    points: [ 
-                        [ -2.5, -6 ], [  3.5, -6 ], [  6.5, -3 ],
-                        [  6.5, -1 ], [  8.5,  2 ], [  7.5,  3 ],
-                        [  7.5,  4 ], [  6.5,  5 ], [  2.5,  5 ],
-                        [  1.5,  6 ], [ -3.5,  6 ], [ -4.5,  5 ],
-                        [ -5.5,  5 ], [ -6.5,  4 ], [ -6.5,  3 ],
-                        [ -7.5,  2 ], [ -7.5, -2 ], [ -4.5, -5 ],
-                        [ -3.5, -5 ]
-                    ],
-                    landed: false,
-                    float: 'bottom',
-                    collided: false
+                    x: 50,
+                    y: 380,
+                    dead: false
                 });
-                
-                this.add('animation, tween');
-                this.play('jump_right');
-                
-                this.on('fall_left', function() {
-                    if (this.p.float == 'bottom') {
-                        this.p.y -= .18;
-                        if (this.p.y <= 126) this.p.float = 'top';
-                    } else if (this.p.float == 'top') {
-                        this.p.y += .18;
-                        if (this.p.y >= 130) this.p.float = 'bottom';
-                    }
-                });
-                
-                this.on('fall_right', function() {
-                    this.play('fall_right');
-                    this.animate({ angle: 90 }, Q.downRotationSpeed);
-                });
-                
-                this.on('jump_left', function() {
-                    if (this.p.y > 0) {
-                        this.stop();
-                        this.play('jump_right');
-                        this.p.vy = -Q.flyHeight;
-                        this.animate({ angle: -22.5 }, Q.upRotationSpeed);
-                        //Q.audio.play('sfx_wing.ogg');
-                    }
-                });
-                
-                this.on('hit.sprite', function(collision) {
-                    if (!this.p.collided) {
-                        this.p.collided = true;
-                        Q.stageScene('Flash', 3);
-                        //Q.audio.play('sfx_hit.ogg');
-    
-                        // if (!collision.obj.isA('Ground')) {
-                        //     Q.audio.play('sfx_die.ogg');
-                        // }
-    
-                        Q('PipeCap', 1).set('sensor', true);
-                        Q('PipeShaft', 1).set('sensor', true);
-    
-                        this.off('jump_left');
-                    }
-    
-                    // if (!this.p.landed) {
-                    //     if (collision.obj.isA('Ground')) {
-                    //         this.p.landed = true;
-                    //         Q.clearStage(2);
-                    //         Q.stageScene('GameOver', 2);
-                    //     }
-                    // }
-                });
+                this.add('2d, platformerControls, animation');
+
             },
-            step: function(dt) {
-                this.trigger('fall_left');
-                
-                if (!this.p.collided) {
-                    this.p.x++;
-    
-                    if (Q.pipeCreator !== undefined && this.p.x % 75 == 0) {
-                        Q.pipeCreator.p.createPipe = true;
+            step: function (dt) {
+                if (!this.p.dead) {
+                    if (this.p.vy < 0) { //jump
+                        this.p.y -= 2;
+                        this.p.landed == true;
+                        this.play("jump_" + this.p.direction);
+                    } else if (this.p.vy > 0) {
+                        this.play("fall_" + this.p.direction);
+                        if (this.p.y > 580) {
+                            this.play("die");
+                            this.p.dead = true;
+                            Q.stageScene("endGame", 1, {
+                                label: "You Died"
+                            });
+                        }
+                    } else if (this.p.vx > 0 && this.p.vy == 0) {
+                        this.play("run_right");
+                    } else if (this.p.vx < 0 && this.p.vy == 0) {
+                        this.play("run_left");
+                    } else {
+                        this.play("stand_" + this.p.direction);
                     }
+                } else {
+                    this.p.vx = 0;
                 }
-    
-                if (this.p.vy > 100) {
-                    this.trigger('fall_right');
-                }
-    
-                /*if (Q.pipes.length > 0) {
-                    if (this.p.x > Q.pipes[0]) {
-                        Q.state.inc('score', 1);
-                        Q.displayNumbers(Q.state.get('score'), Q.scoreContainer, 'large_number');
-                        Q.audio.play('sfx_point.ogg');
-                        Q.pipes.splice(0, 1);
-                    }
-                }*/
+
             }
         });
 
@@ -466,6 +398,7 @@ var game = function () {
                 Q.audio.play('music_main.mp3', {
                     loop: true
                 });
+            
             });
             container.fit(20);
         });
@@ -527,7 +460,7 @@ var game = function () {
             buttonDificil.on("click", function () {
                 Q.clearStages();
                 Q.stageScene('hud', 1);
-                Q.stageScene('Background');
+                Q.stageScene('level1');
                 Q.audio.play('music_main.mp3', {
                     loop: true
                 });
@@ -586,14 +519,6 @@ var game = function () {
             });
             Q.stageScene("title-screen");
         });
-        // Q.scene('Background', function(stage) {
-        //     Q.bg = stage.insert(new Q.Sprite({
-        //         sheet: 'mario_small',
-        //         x: Q.width / 2,
-        //         y: 100,
-        //         frame: Q.random(2)
-        //     }));
-        // });
 
     });
 
