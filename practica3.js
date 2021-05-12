@@ -18,9 +18,9 @@ var game = function () {
         // And turn on default input controls and touch input (for UI)
         .controls().touch().enableSound();
 
+Q.debug = true;
 
-
-    Q.load("buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, mario_small.json, goomba.png, goomba.json, covidVerde.png, tiles.png, bloopa.json, bloopa.png, jerginga.png, hospital.png, coin.png, coin.json, music_main.mp3, music_main.ogg,coin.mp3, coin.ogg,music_die.mp3, music_die.ogg, music_level_complete.mp3, music_level_complete.ogg, squish_enemy.mp3, squish_enemy.ogg", function () {
+    Q.load("buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, mario_small.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
         
     //Q.debug=true;
      
@@ -135,61 +135,20 @@ var game = function () {
             }
         });
 
-        Q.compileSheets("goomba.png", "goomba.json");
 
-        Q.animations('goomba_anim', {
-            move: {
-
-                frames: [0, 1],
-                rate: 1 / 10,
-                loop: true
-            },
-            die: {
-                frames: [2],
-                rate: 1 / 5,
-                loop: false
-            }
-        });
-
-
-        Q.Sprite.extend("Goomba", {
-
-            init: function (p) {
-
-                this._super(p, {
-                    sprite: "goomba_anim",
-                    sheet: "goomba",
-                    x: p.x,
-                    y: p.y,
-                    vx: 40,
-                    dead: false
-                });
-                this.add('2d,aiBounce,defaultEnemy,animation');
-            },
-            step: function (dt) {
-                if (this.p.vx > 0 || this.p.vx < 0)
-                    this.play("move");
-            }
-        });
-
-        Q.compileSheets("covidVerde.png", "bloopa.json");
-        Q.animations('bloopa_anim', {
-            move_up: {
+        Q.compileSheets("covidVerde.png", "virusV.json");
+        Q.animations('virus_animV', {
+            pulse: {
                 frames: [0, 1, 2],
-                rate: 1 / 3,
+                rate: 1 / 2,
                 loop: true
             },
-            //move_down: {
-              //  frames: [2],
-                //rate: 1 / 15,
-                //loop: false
-            //},
             
         });
-        Q.Sprite.extend("Bloopa", {
+        Q.Sprite.extend("covidVerde", {
             init: function (p) {
                 this._super(p, {
-                    sprite: "bloopa_anim",
+                    sprite: "virus_animV",
                     sheet: "virus",
                     vy: 0.1,
                     range: 0,
@@ -203,55 +162,62 @@ var game = function () {
                 this.p.points[1] = [-25, 25];
                 this.p.points[2] = [25, 25];
                 this.p.points[3] = [25, -25];
-            
-                if (this.p.vy == 0.1)
-                    this.play("move_up");
+            this.play("pulse")
+                
 
             }
         });
 
-        Q.compileSheets("coin.png", "coin.json");
-        Q.animations('coin_anim', {
-            taken: {
+        Q.compileSheets("covidAzul.png", "virusA.json");
+        Q.animations('virus_animA', {
+            pulse: {
                 frames: [0, 1, 2],
-                rate: 1 / 15,
+                rate: 1 / 2,
                 loop: true
-            }
+            },
+        
+            
         });
-        Q.Sprite.extend("Coin", {
+
+        Q.Sprite.extend("covidAzul", {
             init: function (p) {
                 this._super(p, {
-                    sprite: "coin_anim",
-                    sheet: "coin",
+                    sprite: "virus_animA",
+                    sheet: "virus",
                     x: p.x,
                     y: p.y,
-                    sensor: true,
-                    gravity: 0,
-                    frame: 0,
-                    hit: false
+                    vy: -6,
+                    move: 'up',
+                    dead: false,
+                    range: p.range,
+                    gravity:0,
+                    dest: 0
                 });
-                this.add('2d, animation, aiBounce, tween');
-                this.on("bump.left,bump.right,bump.bottom,bump.top", function (collision) {
-                    if (collision.obj.isA("Player") && !collision.obj.p.dead) {
-                        if (!this.p.hit) {
-                            this.play("taken")
-                            this.p.hit = true;
-                            Q.audio.play('coin.mp3');
-                            this.animate({
-                                x: this.p.x,
-                                y: this.p.y - 100
-                            },
-                                1, Q.Easing.Quadratic.Linear, {
-                                callback: () => {
-                                    this.destroy();
-                                    Q.state.inc("score", 1);
-                                }
-                            });
-                        }
-                    }
-                });
+                this.add('2d,defaultEnemy,animation');
+            },
+            step: function (dt) {
+                this.p.points[0] = [-25, -25];
+                 this.p.points[1] = [-25, 25];
+                 this.p.points[2] = [25, 25]; 
+                this.p.points[3] = [25, -25];
+                this.play("pulse");
+
+                if(this.p.move == 'up'){
+                this.p.y += this.p.vy;
+                }
+                if(this.p.y < 50){
+                    this.p.move = 'down';
+                }
+                if(this.p.move == 'down'){
+                    this.p.y -= this.p.vy;
+                }
+                if(this.p.y > 530){
+                    this.p.move = 'up';
+                }
             }
         });
+
+
 
         Q.compileSheets("jerginga.png");
         Q.Sprite.extend("Princess", {
@@ -278,8 +244,8 @@ var game = function () {
         });
 
         Q.scene("endGame", function (stage) {
-            Q.audio.stop('music_main.mp3');
-            Q.audio.play('music_die.mp3');
+            Q.audio.stop('main_music1.mp3');
+            Q.audio.play('hit3.mp3');
 
             var container = stage.insert(new Q.UI.Container({
                 x: Q.width / 2,
@@ -303,28 +269,16 @@ var game = function () {
             button.on("click", function () {
                 Q.audio.stop();
                 Q.clearStages();
-                Q.stageScene('hud', 1);
-                Q.stageScene('level1');
+                Q.stageScene('title-screen', 1);
                 Q.state.p.score = 0;
-                Q.audio.play('music_main.mp3', {
-                    loop: true
-                });
-            });
-            Q.input.on('fire', this, () => {
-                Q.audio.stop();
-                Q.clearStages();
-                Q.stageScene('hud', 1);
-                Q.stageScene('level1');
-                Q.state.p.score = 0;
-                Q.audio.play('music_main.mp3', {
-                    loop: true
-                });
+                Q.audio.play('button2.mp3');
+              
             });
             container.fit(20);
         });
 
         Q.scene("winGame", function (stage) {
-            Q.audio.stop('music_main.mp3');
+            Q.audio.stop('main_music1.mp3');
             Q.audio.play('music_level_complete.mp3');
 
             var container = stage.insert(new Q.UI.Container({
@@ -349,24 +303,11 @@ var game = function () {
             button.on("click", function () {
                 Q.audio.stop();
                 Q.clearStages();
-                Q.stageScene('hud', 1);
-                Q.stageScene('level1');
+                Q.stageScene('title-screen', 1);
                 Q.state.p.score = 0;
-                Q.audio.play('music_main.mp3', {
-                    loop: true
-                });
+                Q.audio.play('button2.mp3');
+              
 
-            });
-            Q.input.on('fire', this, () => {
-                Q.audio.stop();
-                Q.clearStages();
-                Q.stageScene('hud', 1);
-                Q.stageScene('level1');
-                Q.state.p.score = 0;
-                Q.audio.play('music_main.mp3', {
-                    loop: true
-                });
-            
             });
             container.fit(20);
         });
@@ -393,8 +334,9 @@ var game = function () {
             buttonEasy.on("click", function () {
                 Q.clearStages();
                 Q.stageScene('hud', 1);
-                Q.stageScene('level1');
-                Q.audio.play('music_main.mp3', {
+                Q.stageScene('levelEasy');
+                Q.audio.play('button2.mp3');
+                Q.audio.play('main_music1.mp3', {
                     loop: true
                 });
 
@@ -410,8 +352,9 @@ var game = function () {
             buttonMedio.on("click", function () {
                 Q.clearStages();
                 Q.stageScene('hud', 1);
-                Q.stageScene('level1');
-                Q.audio.play('music_main.mp3', {
+                Q.stageScene('levelNormal');
+                Q.audio.play('button2.mp3');
+                Q.audio.play('main_music1.mp3', {
                     loop: true
                 });
 
@@ -428,21 +371,12 @@ var game = function () {
             buttonDificil.on("click", function () {
                 Q.clearStages();
                 Q.stageScene('hud', 1);
-                Q.stageScene('level1');
-                Q.audio.play('music_main.mp3', {
+                Q.stageScene('levelHard');
+                Q.audio.play('button2.mp3');
+                Q.audio.play('main_music1.mp3', {
                     loop: true
                 });
 
-            });
-
-
-            Q.input.on('fire', this, () => {
-                Q.clearStages();
-                Q.stageScene('hud', 1);
-                Q.stageScene('level1');
-                Q.audio.play('music_main.mp3', {
-                    loop: true
-                });
             });
 
             container.fit(20);
@@ -466,8 +400,9 @@ var game = function () {
         })
 
 
-        Q.scene("level1", function (stage) {
-            Q.stageTMX("level.tmx", stage);
+        Q.scene("levelEasy", function (stage) {
+            
+            Q.stageTMX("levelFacil.tmx", stage);
             // Create the player and add them to the stage
 
             var player = stage.insert(new Q.Player());
@@ -476,12 +411,28 @@ var game = function () {
                 y: false
             });
             stage.insert(new Q.Princess());
-
+        });
+        Q.loadTMX("levelFacil.tmx", function () {
+            Q.state.reset({
+                score: 0
+            });
+            Q.stageScene("title-screen");
         });
 
 
+        Q.scene("levelNormal", function (stage) {
+            
+            Q.stageTMX("levelNormal.tmx", stage);
+            // Create the player and add them to the stage
 
-        Q.loadTMX("level.tmx", function () {
+            var player = stage.insert(new Q.Player());
+            stage.add("viewport").follow(player, {
+                x: true,
+                y: false
+            });
+            stage.insert(new Q.Princess());
+        });
+        Q.loadTMX("levelNormal.tmx", function () {
             Q.state.reset({
                 score: 0
             });
