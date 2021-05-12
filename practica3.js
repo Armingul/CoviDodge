@@ -18,7 +18,7 @@ var game = function () {
         // And turn on default input controls and touch input (for UI)
         .controls().touch().enableSound();
 
-Q.debug = true;
+//Q.debug = true;
 
     Q.load("buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, mario_small.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
         
@@ -62,7 +62,7 @@ Q.debug = true;
                 loop: false
             },
             die: {
-                frames: [12],
+                frames: [8],
                 rate: 1 / 5
             }
         });
@@ -76,6 +76,7 @@ Q.debug = true;
                     sheet: "daddyR",
                     x: 50,
                     y: 380,
+                    gravity: 0,
                     dead: false
                 });
                 this.add('2d, platformerControls, animation');
@@ -87,19 +88,20 @@ Q.debug = true;
                 this.p.points[2] = [15, 25];
                 this.p.points[3] = [15, -25];
                 if (!this.p.dead) {
+                    if(this.p.x != 50 && this.p.y != 380) this.p.gravity = 1;
+                    if (this.p.y > 580 || this.p.y < 20) {
+                        this.play("die");
+                        this.p.dead = true;
+                        Q.stageScene("endGame", 1, {
+                            label: "You Died"
+                        });
+                    }
                     if (this.p.vy < 0) { //jump
                         this.p.y -= 2;
                         this.p.landed == true;
                         this.play("jump_" + this.p.direction);
                     } else if (this.p.vy > 0) {
                         this.play("fall_" + this.p.direction);
-                        if (this.p.y > 580) {
-                            this.play("die");
-                            this.p.dead = true;
-                            Q.stageScene("endGame", 1, {
-                                label: "You Died"
-                            });
-                        }
                     } else if (this.p.vx > 0 && this.p.vy == 0) {
                         this.play("run_right");
                     } else if (this.p.vx < 0 && this.p.vy == 0) {

@@ -17,7 +17,7 @@
   </tile>
  </tileset>
  <imagelayer id="1" name="background" offsetx="-3.88313" offsety="3.88313">
-  <image source="../images/fondohostpital.png" width="1024" height="612"/>
+  <image source="../images/fondoNormal.png" width="1024" height="612"/>
  </imagelayer>
  <objectgroup id="7" name="objets">
   <object id="346" gid="2" x="600" y="564" width="100" height="100"/>
