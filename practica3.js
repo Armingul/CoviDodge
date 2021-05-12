@@ -20,11 +20,11 @@ var game = function () {
 
 
 
-    Q.load("buttonHard.png, buttonEasy.png, buttonMedio.png, mario_small.png, mario_small.json, goomba.png, goomba.json, tiles.png, bloopa.json, bloopa.png, princess.png, hospital.png, coin.png, coin.json, music_main.mp3, music_main.ogg,coin.mp3, coin.ogg,music_die.mp3, music_die.ogg, music_level_complete.mp3, music_level_complete.ogg, squish_enemy.mp3, squish_enemy.ogg", function () {
+    Q.load("buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, mario_small.json, goomba.png, goomba.json, tiles.png, bloopa.json, bloopa.png, princess.png, hospital.png, coin.png, coin.json, music_main.mp3, music_main.ogg,coin.mp3, coin.ogg,music_die.mp3, music_die.ogg, music_level_complete.mp3, music_level_complete.ogg, squish_enemy.mp3, squish_enemy.ogg", function () {
         
      
         // Or from a .json asset that defines sprite locations
-        Q.compileSheets("mario_small.png", "mario_small.json");
+        Q.compileSheets("daddy.png", "mario_small.json");
         Q.animations('player_anim', {
             run_right: {
                 frames: [1, 2, 3],
@@ -32,7 +32,7 @@ var game = function () {
             },
             run_left: {
                 frames: [15, 16, 17],
-                rate: 1 / 15
+                rate: 1 / 5
             },
             stand_right: {
                 frames: [0],
@@ -43,21 +43,21 @@ var game = function () {
                 rate: 1 / 5
             },
             jump_right: {
-                frames: [4],
-                rate: 1 / 15
+                frames: [1, 2, 3],
+                rate: 1 / 5
             },
             jump_left: {
-                frames: [18],
-                rate: 1 / 15
+                frames: [1, 2, 3],
+                rate: 1 / 5
             },
             fall_right: {
-                frames: [6],
-                rate: 1 / 30,
+                frames: [1, 2, 3],
+                rate: 1 / 5,
                 loop: false
             },
             fall_left: {
-                frames: [20],
-                rate: 1 / 30,
+                frames: [1, 2, 3],
+                rate: 1 / 5,
                 loop: false
             },
             die: {
@@ -72,7 +72,7 @@ var game = function () {
             init: function (p) {
                 this._super(p, {
                     sprite: "player_anim",
-                    sheet: "marioR",
+                    sheet: "daddyR",
                     x: 50,
                     y: 380,
                     dead: false
