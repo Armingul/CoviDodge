@@ -1,4 +1,5 @@
 {
 	"bloopa":{"sx":0,"sy":0,"tileW":32,"tileH":32,"frames":2},
-	"bloopaDie":{"sx":64,"sy":0,"tileW":32,"tileH":32,"frames":1}
+	"bloopaDie":{"sx":64,"sy":0,"tileW":32,"tileH":32,"frames":1},
+	"virus":{"sx":0,"sy":0,"tileW":100,"tileH":100,"frames":3}
 }

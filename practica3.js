@@ -12,7 +12,7 @@ var game = function () {
              maximize:true,
              scaleToFit: true,
              width: 1200,
-             height: 800
+             height: 612
 
         })
         // And turn on default input controls and touch input (for UI)
@@ -20,8 +20,9 @@ var game = function () {
 
 
 
-    Q.load("buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, mario_small.json, goomba.png, goomba.json, tiles.png, bloopa.json, bloopa.png, princess.png, hospital.png, coin.png, coin.json, music_main.mp3, music_main.ogg,coin.mp3, coin.ogg,music_die.mp3, music_die.ogg, music_level_complete.mp3, music_level_complete.ogg, squish_enemy.mp3, squish_enemy.ogg", function () {
+    Q.load("buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, mario_small.json, goomba.png, goomba.json, covidVerde.png, tiles.png, bloopa.json, bloopa.png, princess.png, hospital.png, coin.png, coin.json, music_main.mp3, music_main.ogg,coin.mp3, coin.ogg,music_die.mp3, music_die.ogg, music_level_complete.mp3, music_level_complete.ogg, squish_enemy.mp3, squish_enemy.ogg", function () {
         
+    Q.debug=true;
      
         // Or from a .json asset that defines sprite locations
         Q.compileSheets("daddy.png", "mario_small.json");
@@ -81,6 +82,10 @@ var game = function () {
 
             },
             step: function (dt) {
+                this.p.points[0] = [-25, -25];
+                this.p.points[1] = [-25, 25];
+                this.p.points[2] = [15, 25];
+                this.p.points[3] = [15, -25];
                 if (!this.p.dead) {
                     if (this.p.vy < 0) { //jump
                         this.p.y -= 2;
@@ -112,7 +117,7 @@ var game = function () {
         Q.component("defaultEnemy", {
             added: function () {
 
-                this.entity.on("bump.left,bump.right,bump.bottom", function (collision) {
+                this.entity.on("bump.left,bump.right,bump.bottom, bump.top", function (collision) {
 
                     if (collision.obj.isA("Player") && !collision.obj.p.dead) {
                         collision.obj.play("die");
@@ -126,22 +131,7 @@ var game = function () {
 
                     }
                 });
-                this.entity.on("bump.top", function (collision) {
-
-                    if (collision.obj.isA("Player") && !collision.obj.p.dead) {
-                        Q.audio.play("squish_enemy.mp3");
-                        this.play("die");
-                        collision.obj.p.vy = -300;
-                        this.p.vx = 0;
-                        this.p.vy = 0;
-                        this.p.dead = true;
-                        var aux = this;
-                        setTimeout(function () {
-                            aux.destroy();
-                        }, 300);
-
-                    }
-                });
+     
             }
         });
 
@@ -182,64 +172,49 @@ var game = function () {
             }
         });
 
-        Q.compileSheets("bloopa.png", "bloopa.json");
+        Q.compileSheets("covidVerde.png", "bloopa.json");
         Q.animations('bloopa_anim', {
             move_up: {
-                frames: [0, 1],
-                rate: 1 / 5,
-                loop: true
-            },
-            move_down: {
-                frames: [2],
-                rate: 1 / 15,
+                frames: [0, 1, 2],
+                rate: 1 / 2,
                 loop: false
             },
-            die: {
-                frames: [1],
-                rate: 1 / 15,
-                loop: false
-            }
+            //move_down: {
+              //  frames: [2],
+                //rate: 1 / 15,
+                //loop: false
+            //},
+            
         });
         Q.Sprite.extend("Bloopa", {
             init: function (p) {
                 this._super(p, {
                     sprite: "bloopa_anim",
-                    sheet: "bloopa",
+                    sheet: "virus",
                     x: p.x,
                     y: p.y,
-                    vy: -10,
+                    vy: 0,
                     move: 'up',
                     dead: false,
                     range: p.range,
+                    gravity:0,
                     dest: 0
                 });
-                this.add('2d,aiBounce,defaultEnemy,animation');
+                this.add('2d,defaultEnemy,animation');
             },
             step: function (dt) {
-                if (this.p.move == 'up') {
-                    this.p.dest = this.p.y - this.p.range;
-                    this.p.move = 'taken_up';
-                }
-                if (this.p.move == 'down') {
-                    this.p.dest = this.p.y + this.p.range;
-                    this.p.move = 'taken_down';
-                }
-                if ((this.p.y < this.p.dest && this.p.move == 'taken_up') || this.p.dead) {
-                    if (!this.p.dead)
-                        this.p.y = this.p.dest;
-                    this.p.move = 'down';
-                } else if (this.p.y > this.p.dest && this.p.move == 'taken_up')
-                    this.p.vy = -100;
-                else if (this.p.y > this.p.dest && this.p.move == 'taken_down') {
-                    this.p.y = this.p.dest;
-                    this.p.move = 'up';
-                }
-                this.p.y += this.p.vy * dt;
-                if (this.p.vy < 0)
+                this.p.points[0] = [-25, -25];
+                 this.p.points[1] = [-25, 25];
+                 this.p.points[2] = [25, 25];
+                this.p.points[3] = [25, -25];
+                
+               
+                if (this.p.vy== 0)
                     this.play("move_up");
+                    /*
                 else
                     this.play("move_down");
-
+                */
 
             }
         });
