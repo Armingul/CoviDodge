@@ -20,9 +20,9 @@ var game = function () {
 
 
 
-    Q.load("buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, mario_small.json, goomba.png, goomba.json, covidVerde.png, tiles.png, bloopa.json, bloopa.png, princess.png, hospital.png, coin.png, coin.json, music_main.mp3, music_main.ogg,coin.mp3, coin.ogg,music_die.mp3, music_die.ogg, music_level_complete.mp3, music_level_complete.ogg, squish_enemy.mp3, squish_enemy.ogg", function () {
+    Q.load("buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, mario_small.json, goomba.png, goomba.json, covidVerde.png, tiles.png, bloopa.json, bloopa.png, jerginga.png, hospital.png, coin.png, coin.json, music_main.mp3, music_main.ogg,coin.mp3, coin.ogg,music_die.mp3, music_die.ogg, music_level_complete.mp3, music_level_complete.ogg, squish_enemy.mp3, squish_enemy.ogg", function () {
         
-    Q.debug=true;
+    //Q.debug=true;
      
         // Or from a .json asset that defines sprite locations
         Q.compileSheets("daddy.png", "mario_small.json");
@@ -176,8 +176,8 @@ var game = function () {
         Q.animations('bloopa_anim', {
             move_up: {
                 frames: [0, 1, 2],
-                rate: 1 / 2,
-                loop: false
+                rate: 1 / 3,
+                loop: true
             },
             //move_down: {
               //  frames: [2],
@@ -191,12 +191,8 @@ var game = function () {
                 this._super(p, {
                     sprite: "bloopa_anim",
                     sheet: "virus",
-                    x: p.x,
-                    y: p.y,
-                    vy: 0,
-                    move: 'up',
-                    dead: false,
-                    range: p.range,
+                    vy: 0.1,
+                    range: 0,
                     gravity:0,
                     dest: 0
                 });
@@ -204,17 +200,12 @@ var game = function () {
             },
             step: function (dt) {
                 this.p.points[0] = [-25, -25];
-                 this.p.points[1] = [-25, 25];
-                 this.p.points[2] = [25, 25];
+                this.p.points[1] = [-25, 25];
+                this.p.points[2] = [25, 25];
                 this.p.points[3] = [25, -25];
-                
-               
-                if (this.p.vy== 0)
+            
+                if (this.p.vy == 0.1)
                     this.play("move_up");
-                    /*
-                else
-                    this.play("move_down");
-                */
 
             }
         });
@@ -262,21 +253,23 @@ var game = function () {
             }
         });
 
-        Q.compileSheets("princess.png");
+        Q.compileSheets("jerginga.png");
         Q.Sprite.extend("Princess", {
             init: function (p) {
                 this._super(p, {
-                    asset: "princess.png",
-                    x: 3640,
-                    y: 508,
+                    asset: "jerginga.png",
+                    x: 3500,
+                    y: 350,
+                    gravity:0,
                     win: false
                 });
                 this.add('2d');
                 this.on("bump.left,bump.right,bump.bottom,bump.top", function (collision) {
                     if (collision.obj.isA("Player") && !collision.obj.p.dead && !this.p.win) {
                         this.p.win = true;
+                        Q.stageScene('title-screen');
                         Q.stageScene("winGame", 1, {
-                            label: "You just got friendzoned <3"
+                            label: "TE HAS SALVADO YAYO!!"
                         });
                     }
                 });
