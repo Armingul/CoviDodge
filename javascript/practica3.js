@@ -88,7 +88,10 @@ var game = function () {
                 this.p.points[2] = [15, 25];
                 this.p.points[3] = [15, -25];
                 if (!this.p.dead) {
+        
+                    
                     if(this.p.x != 50 && this.p.y != 380) this.p.gravity = 1;
+                    
                     if (this.p.y > 580 || this.p.y < 20) {
                         this.play("die");
                         this.p.dead = true;
@@ -97,10 +100,12 @@ var game = function () {
                         });
                     }
                     if (this.p.vy < 0) { //jump
+                        Q.state.inc("score", 1);
                         this.p.y -= 2;
                         this.p.landed == true;
                         this.play("jump_" + this.p.direction);
                     } else if (this.p.vy > 0) {
+                        Q.state.inc("score", 1);
                         this.play("fall_" + this.p.direction);
                     } else if (this.p.vx > 0 && this.p.vy == 0) {
                         this.play("run_right");
@@ -109,6 +114,7 @@ var game = function () {
                     } else {
                         this.play("stand_" + this.p.direction);
                     }
+
                 } else {
                     this.p.vx = 0;
                 }
@@ -389,7 +395,7 @@ var game = function () {
                 init: function (p) {
                     this._super({
                         label: "score: 0",
-                        x: 50,
+                        x: 60,
                         y: 0
                     });
                     Q.state.on("change.score", this, "score");
