@@ -20,43 +20,20 @@ var game = function () {
 
     //Q.debug = true;
 
-    Q.load("virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, mario_small.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
+    Q.load("doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
 
         //Q.debug=true;
 
         // Or from a .json asset that defines sprite locations
-        Q.compileSheets("daddy.png", "mario_small.json");
+        Q.compileSheets("daddy.png", "daddy.json");
         Q.animations('player_anim', {
-            run_right: {
-                frames: [1, 2, 3],
-                rate: 1 / 15
-            },
-            run_left: {
-                frames: [15, 16, 17],
-                rate: 1 / 5
-            },
-            stand_right: {
-                frames: [0],
-                rate: 1 / 5
-            },
-            stand_left: {
-                frames: [14],
-                rate: 1 / 5
-            },
+           
+            
             jump_right: {
                 frames: [1, 2, 3],
                 rate: 1 / 5
             },
-            jump_left: {
-                frames: [1, 2, 3],
-                rate: 1 / 5
-            },
             fall_right: {
-                frames: [1, 2, 3],
-                rate: 1 / 5,
-                loop: false
-            },
-            fall_left: {
                 frames: [1, 2, 3],
                 rate: 1 / 5,
                 loop: false
@@ -107,16 +84,13 @@ var game = function () {
                     } else if (this.p.vy > 0) {
                         Q.state.inc("score", 1);
                         this.play("fall_" + this.p.direction);
-                    } else if (this.p.vx > 0 && this.p.vy == 0) {
-                        this.play("run_right");
-                    } else if (this.p.vx < 0 && this.p.vy == 0) {
-                        this.play("run_left");
-                    } else {
-                        this.play("stand_" + this.p.direction);
-                    }
+                     }
 
                 } else {
                     this.p.vx = 0;
+                    this.play("die");
+                    this.p.vy = -500;
+                
                 }
 
             }
@@ -275,13 +249,26 @@ var game = function () {
 
 
 
+        Q.animations('doctorFin', {
+            pulse: {
+                frames: [1],
+                rate: 1 / 1,
+            },
+
+
+        });
         Q.compileSheets("jerginga.png");
-        Q.Sprite.extend("Princess", {
+        Q.Sprite.extend("Doctor", {
             init: function (p) {
                 this._super(p, {
-                    asset: "jerginga.png",
-                    x: 3500,
-                    y: 350,
+                    // sprite: "doctorFin",
+                    // sheet: "doctor",
+                     asset: "jerginga.png",
+                    //  x: 3500,
+                    //  y: 350,
+                     x: p.x,
+                     y: p.y,
+                   
                     gravity: 0,
                     win: false
                 });
@@ -460,13 +447,14 @@ var game = function () {
 
             Q.stageTMX("levelFacil.tmx", stage);
             // Create the player and add them to the stage
-
+            var doctor = new Q.Doctor({x: 3500, y:350});
+            stage.insert(doctor);
             var player = stage.insert(new Q.Player());
             stage.add("viewport").follow(player, {
                 x: true,
                 y: false
             });
-            stage.insert(new Q.Princess());
+            
         });
         Q.loadTMX("levelFacil.tmx", function () {
             Q.state.reset({
@@ -480,13 +468,15 @@ var game = function () {
 
             Q.stageTMX("levelNormal.tmx", stage);
             // Create the player and add them to the stage
-
+            var doctor = new Q.Doctor({x: 1747, y:439}); //Cambiar x e y dependiendo del nivel
+            stage.insert(doctor);
+            
             var player = stage.insert(new Q.Player());
             stage.add("viewport").follow(player, {
                 x: true,
                 y: false
             });
-            stage.insert(new Q.Princess());
+            
         });
         Q.loadTMX("levelNormal.tmx", function () {
             Q.state.reset({
@@ -499,13 +489,16 @@ var game = function () {
 
             Q.stageTMX("levelDificil.tmx", stage);
             // Create the player and add them to the stage
+            // Create the player and add them to the stage
+             var doctor = new Q.Doctor({x: 1747, y:439}); //Cambiar x e y dependiendo del nivel
+            stage.insert(doctor);
 
             var player = stage.insert(new Q.Player());
             stage.add("viewport").follow(player, {
                 x: true,
                 y: false
             });
-            //stage.insert(new Q.Princess());
+            
         });
         Q.loadTMX("levelDificil.tmx", function () {
             Q.state.reset({

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="120" height="18" tilewidth="34" tileheight="34" infinite="0" nextlayerid="8" nextobjectid="346">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="120" height="18" tilewidth="34" tileheight="34" infinite="0" nextlayerid="8" nextobjectid="349">
  <tileset firstgid="1" name="covid" tilewidth="100" tileheight="100" tilecount="3" columns="3">
   <image source="../images/covidVerde.png" trans="ff00ff" width="300" height="100"/>
   <tile id="0">
@@ -12,14 +12,14 @@
   <image source="../images/jerginga.png" trans="ff00ff" width="150" height="270"/>
   <tile id="0">
    <properties>
-    <property name="Class" value="Princess"/>
+    <property name="Class" value="Doctor"/>
    </properties>
   </tile>
  </tileset>
  <imagelayer id="1" name="background" offsetx="-3.88313" offsety="3.88313">
   <image source="../images/fondohostpital.png" width="1024" height="612"/>
  </imagelayer>
- <objectgroup id="7" name="objets">
+ <objectgroup id="7" name="objets" offsetx="-8" offsety="1.33333">
   <object id="188" gid="1" x="410" y="622" width="100" height="100"/>
   <object id="189" gid="1" x="408" y="532" width="100" height="100"/>
   <object id="191" gid="1" x="414" y="98" width="100" height="100"/>
@@ -93,12 +93,13 @@
   <object id="335" gid="1" x="3025.6" y="90" width="100" height="100"/>
   <object id="336" gid="1" x="3026.93" y="182" width="100" height="100"/>
   <object id="337" gid="1" x="3026.93" y="276.667" width="100" height="100"/>
-  <object id="338" gid="1" x="3033.6" y="368.667" width="100" height="100"/>
+  <object id="338" gid="1" x="3026.93" y="374" width="100" height="100"/>
   <object id="339" gid="1" x="3041.6" y="615.333" width="100" height="100"/>
   <object id="340" gid="1" x="3201.6" y="618" width="100" height="100"/>
   <object id="341" gid="1" x="3208.27" y="520.667" width="100" height="100"/>
   <object id="342" gid="1" x="3196.27" y="296.667" width="100" height="100"/>
   <object id="343" gid="1" x="3193.6" y="192.667" width="100" height="100"/>
   <object id="344" gid="1" x="3197.6" y="83.3333" width="100" height="100"/>
+  <object id="346" gid="4" x="3423.67" y="477.667" width="150" height="270"/>
  </objectgroup>
 </map>
