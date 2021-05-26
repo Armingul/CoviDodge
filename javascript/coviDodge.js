@@ -20,7 +20,7 @@ var game = function () {
 
     //Q.debug = true;
 
-    Q.load("doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
+    Q.load("applause.mp3, applause.ogg, pinchazo.mp3, pinchazo.ogg, doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
 
         //Q.debug=true;
 
@@ -54,7 +54,8 @@ var game = function () {
                     x: 50,
                     y: 380,
                     gravity: 0,
-                    dead: false
+                    dead: false,
+                    win: false
                 });
                 this.add('2d, platformerControls, animation');
 
@@ -67,13 +68,13 @@ var game = function () {
                 if (!this.p.dead) {
 
 
-                    if (this.p.x != 50 && this.p.y != 380) this.p.gravity = 1;
+                    if (this.p.x != 50 && this.p.y != 380 && this.p.win == false) this.p.gravity = 1;
 
-                    if (this.p.y > 580 || this.p.y < 20) {
+                    if (this.p.y > 612 || this.p.y < 0) {
                         this.play("die");
                         this.p.dead = true;
                         Q.stageScene("endGame", 1, {
-                            label: "You Died"
+                            label: "Te has contagiado : ("
                         });
                     }
                     if (this.p.vy < 0) { //jump
@@ -86,7 +87,9 @@ var game = function () {
                         this.play("fall_" + this.p.direction);
                      }
 
-                } else {
+                } 
+               
+                else {
                     this.p.vx = 0;
                     this.play("die");
                     this.p.vy = -500;
@@ -107,9 +110,8 @@ var game = function () {
                         collision.obj.p.vy = -500;
                         collision.obj.del("platformerControls");
                         Q.stageScene("endGame", 1, {
-                            label: "You Died"
+                            label: "Te has contagiado : ("
                         });
-
 
                     }
                 });
@@ -133,7 +135,7 @@ var game = function () {
                     sheet: "virusR",
                      x: p.x,
                     y: p.y,
-                    vy: -6,
+                    vy: -3,
                     move: 'up',
                     dead: false,
                     range: p.range,
@@ -153,14 +155,14 @@ var game = function () {
                     this.p.y += this.p.vy;
                     this.p.x += this.p.vy;
                 }
-                if (this.p.y < 50) {
+                if (this.p.y < 100) {
                     this.p.move = 'down';
                 }
                 if (this.p.move == 'down') {
                     this.p.y -= this.p.vy;
                     this.p.x -= this.p.vy;
                 }
-                if (this.p.y > 530) {
+                if (this.p.y > 450) {
                     this.p.move = 'up';
                 }
             }
@@ -274,11 +276,15 @@ var game = function () {
                 });
                 this.add('2d');
                 this.on("bump.left,bump.right,bump.bottom,bump.top", function (collision) {
-                    if (collision.obj.isA("Player") && !collision.obj.p.dead && !this.p.win) {
-                        this.p.win = true;
-                        Q.stageScene('title-screen');
+                    if (collision.obj.isA("Player") && !collision.obj.p.dead) {
+                        collision.obj.p.win = true; 
+                        collision.obj.p.vy = 0;
+                        collision.obj.p.vx = 0;
+                        collision.obj.p.gravity = 0;
+                        //Q.stageScene('title-scisionreen');
+                        collision.obj.del("platformerControls");
                         Q.stageScene("winGame", 1, {
-                            label: "TE HAS SALVADO YAYO!!"
+                            label: "Te han vacunado : ) Enhorabuena!!"
                         });
                     }
                 });
@@ -293,6 +299,7 @@ var game = function () {
             var container = stage.insert(new Q.UI.Container({
                 x: Q.width / 2,
                 y: Q.height / 2,
+                border:true,
                 fill: "rgba(0,0,0,0.5)"
             }));
 
@@ -300,12 +307,13 @@ var game = function () {
                 x: 0,
                 y: 0,
                 fill: "#CCCCCC",
-                label: "Play Again"
+                label: "Menu"
             }));
 
             var label = container.insert(new Q.UI.Text({
                 x: 10,
                 y: -10 - button.p.h,
+                color:"#FF0000",
                 label: stage.options.label
             }));
 
@@ -321,8 +329,10 @@ var game = function () {
         });
 
         Q.scene("winGame", function (stage) {
+
             Q.audio.stop('main_music1.mp3');
-            Q.audio.play('music_level_complete.mp3');
+            Q.audio.play('pinchazo.mp3');
+            Q.audio.play('applause.mp3');
 
             var container = stage.insert(new Q.UI.Container({
                 x: Q.width / 2,
@@ -334,12 +344,13 @@ var game = function () {
                 x: 0,
                 y: 0,
                 fill: "#CCCCCC",
-                label: "Play Again"
+                label: "Menu"
             }));
 
             var label = container.insert(new Q.UI.Text({
                 x: 10,
                 y: -10 - button.p.h,
+                color: "#00BB2D",
                 label: stage.options.label
             }));
 
@@ -447,8 +458,8 @@ var game = function () {
 
             Q.stageTMX("levelFacil.tmx", stage);
             // Create the player and add them to the stage
-            var doctor = new Q.Doctor({x: 3500, y:350});
-            stage.insert(doctor);
+            // var doctor = new Q.Doctor({x: 3500, y:350});
+            // stage.insert(doctor);
             var player = stage.insert(new Q.Player());
             stage.add("viewport").follow(player, {
                 x: true,
@@ -468,8 +479,8 @@ var game = function () {
 
             Q.stageTMX("levelNormal.tmx", stage);
             // Create the player and add them to the stage
-            var doctor = new Q.Doctor({x: 1747, y:439}); //Cambiar x e y dependiendo del nivel
-            stage.insert(doctor);
+            // var doctor = new Q.Doctor({x: 1747, y:439});
+            // stage.insert(doctor);
             
             var player = stage.insert(new Q.Player());
             stage.add("viewport").follow(player, {
@@ -490,8 +501,8 @@ var game = function () {
             Q.stageTMX("levelDificil.tmx", stage);
             // Create the player and add them to the stage
             // Create the player and add them to the stage
-             var doctor = new Q.Doctor({x: 1747, y:439}); //Cambiar x e y dependiendo del nivel
-            stage.insert(doctor);
+            //  var doctor = new Q.Doctor({x: 1747, y:439});
+            // stage.insert(doctor);
 
             var player = stage.insert(new Q.Player());
             stage.add("viewport").follow(player, {
