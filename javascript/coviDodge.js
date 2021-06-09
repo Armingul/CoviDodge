@@ -20,15 +20,15 @@ var game = function () {
 
     //Q.debug = true;
 
-    Q.load("applause.mp3, applause.ogg, pinchazo.mp3, pinchazo.ogg, doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
+    Q.load("buttonInf.png, applause.mp3, applause.ogg, pinchazo.mp3, pinchazo.ogg, doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
 
         //Q.debug=true;
 
         // Or from a .json asset that defines sprite locations
         Q.compileSheets("daddy.png", "daddy.json");
         Q.animations('player_anim', {
-           
-            
+
+
             jump_right: {
                 frames: [1, 2, 3],
                 rate: 1 / 5
@@ -58,7 +58,7 @@ var game = function () {
                     win: false
                 });
                 this.add('2d, platformerControls, animation');
-
+                Q.Player = this;
             },
             step: function (dt) {
                 this.p.points[0] = [-25, -25];
@@ -69,7 +69,9 @@ var game = function () {
 
 
                     if (this.p.x != 50 && this.p.y != 380 && this.p.win == false) this.p.gravity = 1;
-
+                    if(Q.virusCreator!==undefined && this.p.x%4 == 0){
+                        Q.virusCreator.p.createVirus = true;
+                    }
                     if (this.p.y > 612 || this.p.y < 0) {
                         this.play("die");
                         this.p.dead = true;
@@ -85,15 +87,15 @@ var game = function () {
                     } else if (this.p.vy > 0) {
                         Q.state.inc("score", 1);
                         this.play("fall_" + this.p.direction);
-                     }
+                    }
 
-                } 
-               
+                }
+
                 else {
                     this.p.vx = 0;
                     this.play("die");
                     this.p.vy = -500;
-                
+
                 }
 
             }
@@ -114,6 +116,29 @@ var game = function () {
                         });
 
                     }
+                    // else{
+                    //     var aux = this;
+                    //     if(collision.obj.isA("covidVerde")){
+                    //         if(collision.obj.p.move == "up"){
+                    //             collision.obj.p.move == "down";
+                    //         }
+                    //         else if(collision.obj.p.move == "down"){
+                    //             collision.obj.p.move == "up";
+                    //         }
+                    //     }
+                    //     else if(collision.obj.isA("covidAzul")){
+                    //         if(collision.obj.p.move == "up"){
+                    //             collision.obj.p.move == "down";
+                    //         }
+                    //         else if(collision.obj.p.move == "down"){
+                    //             collision.obj.p.move == "up";
+                    //         }
+                           
+                    //     }
+                
+                        
+                    // }
+
                 });
 
             }
@@ -133,7 +158,7 @@ var game = function () {
                 this._super(p, {
                     sprite: "virus_animR",
                     sheet: "virusR",
-                     x: p.x,
+                    x: p.x,
                     y: p.y,
                     vy: -3,
                     move: 'up',
@@ -155,13 +180,14 @@ var game = function () {
                     this.p.y += this.p.vy;
                     this.p.x += this.p.vy;
                 }
-                if (this.p.y < 100) {
-                    this.p.move = 'down';
-                }
                 if (this.p.move == 'down') {
                     this.p.y -= this.p.vy;
                     this.p.x -= this.p.vy;
                 }
+                if (this.p.y < 100) {
+                    this.p.move = 'down';
+                }
+               
                 if (this.p.y > 450) {
                     this.p.move = 'up';
                 }
@@ -237,12 +263,13 @@ var game = function () {
                 if (this.p.move == 'up') {
                     this.p.y += this.p.vy;
                 }
-                if (this.p.y < 50) {
-                    this.p.move = 'down';
-                }
                 if (this.p.move == 'down') {
                     this.p.y -= this.p.vy;
                 }
+                if (this.p.y < 50) {
+                    this.p.move = 'down';
+                }
+                
                 if (this.p.y > 530) {
                     this.p.move = 'up';
                 }
@@ -265,19 +292,19 @@ var game = function () {
                 this._super(p, {
                     // sprite: "doctorFin",
                     // sheet: "doctor",
-                     asset: "jerginga.png",
+                    asset: "jerginga.png",
                     //  x: 3500,
                     //  y: 350,
-                     x: p.x,
-                     y: p.y,
-                   
+                    x: p.x,
+                    y: p.y,
+
                     gravity: 0,
                     win: false
                 });
                 this.add('2d');
                 this.on("bump.left,bump.right,bump.bottom,bump.top", function (collision) {
                     if (collision.obj.isA("Player") && !collision.obj.p.dead) {
-                        collision.obj.p.win = true; 
+                        collision.obj.p.win = true;
                         collision.obj.p.vy = 0;
                         collision.obj.p.vx = 0;
                         collision.obj.p.gravity = 0;
@@ -299,7 +326,7 @@ var game = function () {
             var container = stage.insert(new Q.UI.Container({
                 x: Q.width / 2,
                 y: Q.height / 2,
-                border:true,
+                border: true,
                 fill: "rgba(0,0,0,0.5)"
             }));
 
@@ -313,7 +340,7 @@ var game = function () {
             var label = container.insert(new Q.UI.Text({
                 x: 10,
                 y: -10 - button.p.h,
-                color:"#FF0000",
+                color: "#FF0000",
                 label: stage.options.label
             }));
 
@@ -365,6 +392,83 @@ var game = function () {
             });
             container.fit(20);
         });
+
+        /*Modo infinito */
+
+        Q.virus = [];
+        
+        Q.GameObject.extend('virusCreator', {
+            init: function () {
+                this.p = {
+                    createVirus: false,
+                    levels: [20, 40, 60]
+                }
+
+                Q.virusCreator = this;
+            },
+            update: function (dt) {
+             if(this.p.createVirus){
+                this.p.createVirus = false;
+                var r = this.p.levels[Q.random(3)] - 1;
+                this.stage.insert(new Q.covidVerde({x: Q.Player.p.x + 600, y: r }));
+                this.stage.insert(new Q.covidVerde({x: Q.Player.p.x + 600, y: r-10 }));
+             }
+                //var n = Math.floor(Math.random() * 20);
+               // var r = this.p.levels[Q.random(3)] - 1;
+                // setTimeout(function () {}, 10000);
+          
+                // this.stage.insert(new Q.covidVerde({x: Q.Player.p.x + 600, y: r }));
+                // this.stage.insert(new Q.covidVerde({x: Q.Player.p.x + 600, y: r-10 }));
+                // if (n == 0) {
+                //     this.stage.insert(new Q.covidVerde({ x: Q.Player.p.x + 600, y: Q.Player.p.y }))
+                // }
+
+                // else if (n == 1) {
+                //     this.stage.insert(new Q.covidAzul({ x: Q.Player.p.x + 500, y: Q.Player.p.y }))
+                // }
+                // else if (n == 2) {
+                //     this.stage.insert(new Q.covidRojo({ x: Q.Player.p.x + 400, y: Q.Player.p.y }))
+                // }
+            //    setTimeout(function () {}, 10000);
+            }
+        });
+
+        Q.random = function(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        Q.scene('Background', function (stage) {
+            Q.bg = stage.insert(new Q.Sprite({
+                sheet: 'background',
+                x: Q.width / 2,
+                y: 100,
+                frame: Q.random(2)
+            }));
+        });
+
+        Q.scene('levelInfinito', function (stage) {
+            Q.pipes = [];
+            Q.state.set('score', 0);
+
+            Q.player = stage.insert(new Q.Player());
+
+            // stage.insert(new Q.covidInfinito({x: 200, y:100}));
+            stage.insert(new Q.virusCreator);
+            // stage.insert(new Q.Repeater({
+            //     sheet: 'virusA',
+            //     y: 100,
+            //     speedX: 1.0,
+            //     repeatY: false,
+            //     //z: 3
+            // }));
+
+            stage.add('viewport').follow(Q.player, {
+                x: true,
+                y: false
+            });
+            stage.viewport.offsetX = Q.player.p.cx - 2;
+        });
+        /*Final del código del modo infinito */
 
 
         Q.compileSheets("buttonMedio.png", "buttonEasy.png", "buttonHard.png");
@@ -433,6 +537,25 @@ var game = function () {
 
             });
 
+            var buttonInf = container.insert(new Q.UI.Button({
+                asset: "buttonInf.png",
+                label: "Nivel Infinito",
+                y: 200,
+                x: 0,
+                fill: "#1C00ff00"
+
+            }));
+            buttonInf.on("click", function () {
+                Q.clearStages();
+                Q.stageScene('hud', 1);
+                Q.stageScene('levelInfinito');
+                Q.audio.play('button2.mp3');
+                Q.audio.play('main_music1.mp3', {
+                    loop: true
+                });
+
+            });
+
             container.fit(20);
         });
 
@@ -440,14 +563,15 @@ var game = function () {
             Q.UI.Text.extend("Score", {
                 init: function (p) {
                     this._super({
-                        label: "score: 0",
-                        x: 60,
-                        y: 0
+                        label: "Score: 0",
+                        x: 90,
+                        y: 10,
+                        color: "#000FFF"
                     });
                     Q.state.on("change.score", this, "score");
                 },
                 score: function (score) {
-                    this.p.label = "score: " + score;
+                    this.p.label = "Score: " + score;
                 },
             });
             stage.insert(new Q.Score());
@@ -465,7 +589,7 @@ var game = function () {
                 x: true,
                 y: false
             });
-            
+
         });
         Q.loadTMX("levelFacil.tmx", function () {
             Q.state.reset({
@@ -481,13 +605,13 @@ var game = function () {
             // Create the player and add them to the stage
             // var doctor = new Q.Doctor({x: 1747, y:439});
             // stage.insert(doctor);
-            
+
             var player = stage.insert(new Q.Player());
             stage.add("viewport").follow(player, {
                 x: true,
                 y: false
             });
-            
+
         });
         Q.loadTMX("levelNormal.tmx", function () {
             Q.state.reset({
@@ -509,7 +633,7 @@ var game = function () {
                 x: true,
                 y: false
             });
-            
+
         });
         Q.loadTMX("levelDificil.tmx", function () {
             Q.state.reset({
