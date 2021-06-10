@@ -18,7 +18,7 @@ var game = function () {
         // And turn on default input controls and touch input (for UI)
         .controls().touch().enableSound();
 
-    //Q.debug = true;
+    Q.debug = true;
 
     Q.load("buttonInf.png, applause.mp3, applause.ogg, pinchazo.mp3, pinchazo.ogg, doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
 
@@ -58,7 +58,7 @@ var game = function () {
                     win: false
                 });
                 this.add('2d, platformerControls, animation');
-                Q.Player = this;
+                Q.personaje = this;
             },
             step: function (dt) {
                 this.p.points[0] = [-25, -25];
@@ -69,9 +69,6 @@ var game = function () {
 
 
                     if (this.p.x != 50 && this.p.y != 380 && this.p.win == false) this.p.gravity = 1;
-                    if(Q.virusCreator!==undefined && this.p.x%4 == 0){
-                        Q.virusCreator.p.createVirus = true;
-                    }
                     if (this.p.y > 612 || this.p.y < 0) {
                         this.play("die");
                         this.p.dead = true;
@@ -116,28 +113,6 @@ var game = function () {
                         });
 
                     }
-                    // else{
-                    //     var aux = this;
-                    //     if(collision.obj.isA("covidVerde")){
-                    //         if(collision.obj.p.move == "up"){
-                    //             collision.obj.p.move == "down";
-                    //         }
-                    //         else if(collision.obj.p.move == "down"){
-                    //             collision.obj.p.move == "up";
-                    //         }
-                    //     }
-                    //     else if(collision.obj.isA("covidAzul")){
-                    //         if(collision.obj.p.move == "up"){
-                    //             collision.obj.p.move == "down";
-                    //         }
-                    //         else if(collision.obj.p.move == "down"){
-                    //             collision.obj.p.move == "up";
-                    //         }
-                           
-                    //     }
-                
-                        
-                    // }
 
                 });
 
@@ -397,7 +372,7 @@ var game = function () {
 
         Q.virus = [];
         
-        Q.GameObject.extend('virusCreator', {
+        Q.GameObject.extend('VirusCreator', {
             init: function () {
                 this.p = {
                     createVirus: false,
@@ -407,11 +382,13 @@ var game = function () {
                 Q.virusCreator = this;
             },
             update: function (dt) {
+                var aux = Q.random(1000);
+                if(aux %75 == 0) this.p.createVirus = true;
              if(this.p.createVirus){
                 this.p.createVirus = false;
-                var r = this.p.levels[Q.random(3)] - 1;
-                this.stage.insert(new Q.covidVerde({x: Q.Player.p.x + 600, y: r }));
-                this.stage.insert(new Q.covidVerde({x: Q.Player.p.x + 600, y: r-10 }));
+                var r = Math.floor(Math.random()*(500-70+1)+80);
+                this.stage.insert(new Q.covidVerde({x: Q.personaje.p.x + 600, y: r+20 }));
+                this.stage.insert(new Q.covidVerde({x: Q.personaje.p.x + 600, y: r - 20 }));
              }
                 //var n = Math.floor(Math.random() * 20);
                // var r = this.p.levels[Q.random(3)] - 1;
@@ -451,9 +428,8 @@ var game = function () {
             Q.state.set('score', 0);
 
             Q.player = stage.insert(new Q.Player());
-
+            Q.player.stage.insert(new Q.VirusCreator());
             // stage.insert(new Q.covidInfinito({x: 200, y:100}));
-            stage.insert(new Q.virusCreator);
             // stage.insert(new Q.Repeater({
             //     sheet: 'virusA',
             //     y: 100,
