@@ -22,7 +22,7 @@ var game = function () {
 
     Q.load("buttonInf.png, applause.mp3, applause.ogg, pinchazo.mp3, pinchazo.ogg, doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
 
-        //Q.debug=true;
+        
 
         // Or from a .json asset that defines sprite locations
         Q.compileSheets("daddy.png", "daddy.json");
@@ -371,25 +371,42 @@ var game = function () {
         /*Modo infinito */
 
         Q.virus = [];
-        
+        Q.crea = true;
         Q.GameObject.extend('VirusCreator', {
             init: function () {
                 this.p = {
                     createVirus: false,
                     levels: [20, 40, 60]
                 }
-
+                
                 Q.virusCreator = this;
             },
+            
             update: function (dt) {
-                var aux = Q.random(1000);
+                
+                var muerte = Q.personaje.p.dead;
+                var aux = Q.random(100);
                 if(aux %75 == 0) this.p.createVirus = true;
-             if(this.p.createVirus){
-                this.p.createVirus = false;
-                var r = Math.floor(Math.random()*(500-70+1)+80);
-                this.stage.insert(new Q.covidVerde({x: Q.personaje.p.x + 600, y: r+20 }));
-                this.stage.insert(new Q.covidVerde({x: Q.personaje.p.x + 600, y: r - 20 }));
-             }
+             if(this.p.createVirus && !muerte && Q.personaje.p.x > 200){
+               
+                    this.p.createVirus = false;
+                    var r = Math.floor(Math.random()*(500-70+1)+80);
+
+                   
+                    if(Q.crea){
+                        this.stage.insert(new Q.covidAzul({x: Q.personaje.p.x + 600, y: r+20 }));
+                        Q.crea = false;
+                    }
+                    setInterval(function() {Q.crea = true;}, 5000);
+                   
+                   
+                // this.p.createVirus = false;
+                // var r = Math.floor(Math.random()*(500-70+1)+80);
+                // this.stage.insert(new Q.covidAzul({x: Q.personaje.p.x + 600, y: r+20 }));
+                //this.stage.insert(new Q.covidVerde({x: Q.personaje.p.x + 600, y: r - 20 }));
+            }
+            console.log("La variable vale: " + Q.crea);
+ 
                 //var n = Math.floor(Math.random() * 20);
                // var r = this.p.levels[Q.random(3)] - 1;
                 // setTimeout(function () {}, 10000);
@@ -407,26 +424,21 @@ var game = function () {
                 //     this.stage.insert(new Q.covidRojo({ x: Q.Player.p.x + 400, y: Q.Player.p.y }))
                 // }
             //    setTimeout(function () {}, 10000);
-            }
+           
+        }
         });
 
         Q.random = function(max) {
             return Math.floor(Math.random() * max);
         }
 
-        Q.scene('Background', function (stage) {
-            Q.bg = stage.insert(new Q.Sprite({
-                sheet: 'background',
-                x: Q.width / 2,
-                y: 100,
-                frame: Q.random(2)
-            }));
-        });
-
+      
         Q.scene('levelInfinito', function (stage) {
             Q.pipes = [];
             Q.state.set('score', 0);
-
+            stage.insert(new Q.Repeater({
+                asset: 'fondohostpital.png'
+            }));
             Q.player = stage.insert(new Q.Player());
             Q.player.stage.insert(new Q.VirusCreator());
             // stage.insert(new Q.covidInfinito({x: 200, y:100}));
@@ -437,7 +449,7 @@ var game = function () {
             //     repeatY: false,
             //     //z: 3
             // }));
-
+            
             stage.add('viewport').follow(Q.player, {
                 x: true,
                 y: false
