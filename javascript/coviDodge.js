@@ -18,11 +18,11 @@ var game = function () {
         // And turn on default input controls and touch input (for UI)
         .controls().touch().enableSound();
 
-    Q.debug = true;
+    //Q.debug = true;
 
-    Q.load("buttonInf.png, applause.mp3, applause.ogg, pinchazo.mp3, pinchazo.ogg, doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
+    Q.load("HUD.png, buttonInf.png, applause.mp3, applause.ogg, pinchazo.mp3, pinchazo.ogg, doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
 
-        
+
 
         // Or from a .json asset that defines sprite locations
         Q.compileSheets("daddy.png", "daddy.json");
@@ -162,7 +162,7 @@ var game = function () {
                 if (this.p.y < 100) {
                     this.p.move = 'down';
                 }
-               
+
                 if (this.p.y > 450) {
                     this.p.move = 'up';
                 }
@@ -244,7 +244,7 @@ var game = function () {
                 if (this.p.y < 50) {
                     this.p.move = 'down';
                 }
-                
+
                 if (this.p.y > 530) {
                     this.p.move = 'up';
                 }
@@ -371,68 +371,47 @@ var game = function () {
         /*Modo infinito */
 
         Q.virus = [];
-        Q.crea = true;
+        Q.crea = 0; Q.pos =600;
         Q.GameObject.extend('VirusCreator', {
             init: function () {
                 this.p = {
                     createVirus: false,
                     levels: [20, 40, 60]
                 }
-                
+
                 Q.virusCreator = this;
             },
-            
+
             update: function (dt) {
-                
+
                 var muerte = Q.personaje.p.dead;
                 var aux = Q.random(100);
-                if(aux %75 == 0) this.p.createVirus = true;
-             if(this.p.createVirus && !muerte && Q.personaje.p.x > 200){
-               
+                //Q.crea +=2;
+                if (aux % 75 == 0) this.p.createVirus = true;
+                if (this.p.createVirus && !muerte && Q.personaje.p.x > 200) {
+
                     this.p.createVirus = false;
-                    var r = Math.floor(Math.random()*(500-70+1)+80);
+                    var r = Math.floor(Math.random() * (500 - 70 + 1) + 80);
 
-                   
-                    if(Q.crea){
-                        this.stage.insert(new Q.covidAzul({x: Q.personaje.p.x + 600, y: r+20 }));
-                        Q.crea = false;
-                    }
-                    setInterval(function() {Q.crea = true;}, 5000);
-                   
-                   
-                // this.p.createVirus = false;
-                // var r = Math.floor(Math.random()*(500-70+1)+80);
-                // this.stage.insert(new Q.covidAzul({x: Q.personaje.p.x + 600, y: r+20 }));
-                //this.stage.insert(new Q.covidVerde({x: Q.personaje.p.x + 600, y: r - 20 }));
+                    //this.stage.insert(new Q.covidAzul({ x: Q.personaje.p.x + 600, y: r + 20 }));
+
+                //if(Q.crea % 2 == 0){
+                this.stage.insert(new Q.covidAzul({ x: Q.personaje.p.x + Q.pos, y: r + 20 }));
+                Q.pos+=150;
+                //}
+                
+
+                }
+                console.log("La variable vale: " + Q.crea);
+
             }
-            console.log("La variable vale: " + Q.crea);
- 
-                //var n = Math.floor(Math.random() * 20);
-               // var r = this.p.levels[Q.random(3)] - 1;
-                // setTimeout(function () {}, 10000);
-          
-                // this.stage.insert(new Q.covidVerde({x: Q.Player.p.x + 600, y: r }));
-                // this.stage.insert(new Q.covidVerde({x: Q.Player.p.x + 600, y: r-10 }));
-                // if (n == 0) {
-                //     this.stage.insert(new Q.covidVerde({ x: Q.Player.p.x + 600, y: Q.Player.p.y }))
-                // }
-
-                // else if (n == 1) {
-                //     this.stage.insert(new Q.covidAzul({ x: Q.Player.p.x + 500, y: Q.Player.p.y }))
-                // }
-                // else if (n == 2) {
-                //     this.stage.insert(new Q.covidRojo({ x: Q.Player.p.x + 400, y: Q.Player.p.y }))
-                // }
-            //    setTimeout(function () {}, 10000);
-           
-        }
         });
 
-        Q.random = function(max) {
+        Q.random = function (max) {
             return Math.floor(Math.random() * max);
         }
 
-      
+
         Q.scene('levelInfinito', function (stage) {
             Q.pipes = [];
             Q.state.set('score', 0);
@@ -441,15 +420,7 @@ var game = function () {
             }));
             Q.player = stage.insert(new Q.Player());
             Q.player.stage.insert(new Q.VirusCreator());
-            // stage.insert(new Q.covidInfinito({x: 200, y:100}));
-            // stage.insert(new Q.Repeater({
-            //     sheet: 'virusA',
-            //     y: 100,
-            //     speedX: 1.0,
-            //     repeatY: false,
-            //     //z: 3
-            // }));
-            
+
             stage.add('viewport').follow(Q.player, {
                 x: true,
                 y: false
@@ -551,20 +522,32 @@ var game = function () {
             Q.UI.Text.extend("Score", {
                 init: function (p) {
                     this._super({
-                        label: "Score: 0",
-                        x: 90,
-                        y: 10,
-                        color: "#000FFF"
+                        label: "0",
+                        x: 75,
+                        y: 103,
+                        color: "#00b050"
                     });
                     Q.state.on("change.score", this, "score");
                 },
                 score: function (score) {
-                    this.p.label = "Score: " + score;
+                    this.p.label = "" + score;
                 },
             });
+
+            stage.insert(new Q.ScoreE());
             stage.insert(new Q.Score());
+
         })
 
+        Q.Sprite.extend("ScoreE", {
+            init: function (p) {
+                this._super(p, {
+                    asset: "HUD.png",
+                    x: 120,
+                    y: 90,
+                });
+            }
+        });
 
         Q.scene("levelEasy", function (stage) {
 
