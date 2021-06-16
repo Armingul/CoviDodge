@@ -531,8 +531,7 @@ var game = function () {
                 // label: "Ranking",
                 y: 0,
                 x: 0,
-                fill: "#1C00ff00",
-                border: "#1C00ff00",
+                fill: "#1C00ff00"
             }));
             buttonRank.on("click", function () {
                 Q.clearStages();
