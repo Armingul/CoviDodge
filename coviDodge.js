@@ -567,35 +567,52 @@ var game = function () {
             //Q.audio.play('music_ranking.mp3');
 
             var container = stage.insert(new Q.UI.Container({
-                x: Q.width / 2,
-                y: Q.height / 2,
+                x: 600,
+                y: 160,
                 border: true,
                 fill: "rgba(0,0,0,0.5)"
             }));
 
+            var button = container.insert(new Q.UI.Button({
+                x: 0,
+                y: 360,
+                fill: "#CCCCCC",
+                label: "Menu"
+            }));
+
+            button.on("click", function () {
+                Q.audio.stop();
+                Q.clearStages();
+                Q.stageScene('title-screen', 1);
+                Q.state.p.score = 0;
+                Q.audio.play('button2.mp3');
+
+
+            });
+
 
             var label = container.insert(new Q.UI.Text({
-                x: -100,
+                x: 0,
                 y: 0,
-                color: "#FF0000",
+                color: "#FFFFFF",
                 label: "Nivel Fácil: " + DATA.easy
             }));
             var label1 = container.insert(new Q.UI.Text({
                 x: 0,
                 y: 100,
-                color: "#FF0000",
+                color: "#FFFFFF",
                 label: "Nivel Normal: " + DATA.normal
             }));
             var label2 = container.insert(new Q.UI.Text({
-                x: 100,
+                x: 0,
                 y: 200,
-                color: "#FF0000",
+                color: "#FFFFFF",
                 label: "Nivel Difícil: " + DATA.dificult
             }));
             var label3 = container.insert(new Q.UI.Text({
-                x: 200,
+                x: 0,
                 y: 300,
-                color: "#FF0000",
+                color: "#FFFFFF",
                 label: "Nivel Infinito: " + DATA.infinite
             }));
 
