@@ -108,6 +108,24 @@ var game = function () {
                         collision.obj.p.dead = true;
                         collision.obj.p.vy = -500;
                         collision.obj.del("platformerControls");
+                        var nameee = this.stage.scene.name;
+                        if(nameee == "levelEasy"){
+                            if(DATA.easy < parseInt(Q.text.p.label))
+                                DATA.easy = parseInt (Q.text.p.label);
+                        }
+                        if(nameee == "levelNormal"){
+                            if(DATA.normal < parseInt(Q.text.p.label))
+                                DATA.normal = parseInt (Q.text.p.label);
+                        }
+                        if(nameee == "levelHard"){
+                            if(DATA.dificult < parseInt(Q.text.p.label))
+                                DATA.dificult = parseInt (Q.text.p.label);
+                        }
+                        if(nameee == "levelInfinito"){
+                            if(DATA.infinite < parseInt(Q.text.p.label))
+                                DATA.infinite = parseInt (Q.text.p.label);
+                        }
+                        
                         Q.stageScene("endGame", 1, {
                             label: "Te has contagiado : ("
                         });
@@ -283,7 +301,6 @@ var game = function () {
                         collision.obj.p.vy = 0;
                         collision.obj.p.vx = 0;
                         collision.obj.p.gravity = 0;
-                        //Q.stageScene('title-scisionreen');
                         collision.obj.del("platformerControls");
                         Q.stageScene("winGame", 1, {
                             label: "Te han vacunado : ) Enhorabuena!!"
@@ -561,25 +578,25 @@ var game = function () {
                 x: -100,
                 y: 0,
                 color: "#FF0000",
-                label: "Nivel Fácil: " //+ ranking.easy
+                label: "Nivel Fácil: " + DATA.easy
             }));
             var label1 = container.insert(new Q.UI.Text({
                 x: 0,
                 y: 100,
                 color: "#FF0000",
-                label: "Nivel Normal: " //+ ranking.easy
+                label: "Nivel Normal: " + DATA.normal
             }));
             var label2 = container.insert(new Q.UI.Text({
                 x: 100,
                 y: 200,
                 color: "#FF0000",
-                label: "Nivel Difícil: " //+ ranking.easy
+                label: "Nivel Difícil: " + DATA.dificult
             }));
             var label3 = container.insert(new Q.UI.Text({
                 x: 200,
                 y: 300,
                 color: "#FF0000",
-                label: "Nivel Infinito: " //+ ranking.easy
+                label: "Nivel Infinito: " + DATA.infinite
             }));
 
             container.fit(20);
@@ -595,6 +612,7 @@ var game = function () {
                         color: "#00b050"
                     });
                     Q.state.on("change.score", this, "score");
+                    Q.text = this
                 },
                 score: function (score) {
                     this.p.label = "" + score;
