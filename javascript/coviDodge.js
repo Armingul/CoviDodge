@@ -20,7 +20,7 @@ var game = function () {
 
     //Q.debug = true;
 
-    Q.load("HUD.png, buttonInf.png, applause.mp3, applause.ogg, pinchazo.mp3, pinchazo.ogg, doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
+    Q.load("ranking.png, fondoInf.png, HUD.png, buttonInf.png, applause.mp3, applause.ogg, pinchazo.mp3, pinchazo.ogg, doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
 
 
 
@@ -371,7 +371,7 @@ var game = function () {
         /*Modo infinito */
 
         Q.virus = [];
-        Q.crea = 0; Q.pos =600;
+        Q.pos =600;
         Q.GameObject.extend('VirusCreator', {
             init: function () {
                 this.p = {
@@ -416,7 +416,7 @@ var game = function () {
             Q.pipes = [];
             Q.state.set('score', 0);
             stage.insert(new Q.Repeater({
-                asset: 'fondohostpital.png'
+                asset: 'fondoInf.png'
             }));
             Q.player = stage.insert(new Q.Player());
             Q.player.stage.insert(new Q.VirusCreator());
@@ -505,6 +505,7 @@ var game = function () {
 
             }));
             buttonInf.on("click", function () {
+                Q.pos = 600;
                 Q.clearStages();
                 Q.stageScene('hud', 1);
                 Q.stageScene('levelInfinito');
@@ -516,6 +517,34 @@ var game = function () {
             });
 
             container.fit(20);
+
+            var container1 = stage.insert(new Q.UI.Container({
+                x: 1150,
+                y: 50,
+                w: 10,
+                h: 10,
+                fill: "rgba(0,0,0,0.5)"
+            }));
+
+            var buttonRank = container1.insert(new Q.UI.Button({
+                asset: "ranking.png",
+                // label: "Ranking",
+                y: 0,
+                x: 0,
+                fill: "#1C00ff00",
+                border: "#1C00ff00",
+            }));
+            buttonRank.on("click", function () {
+                Q.clearStages();
+                Q.stageScene('hud', 1);
+                Q.stageScene('levelEasy');
+                Q.audio.play('button2.mp3');
+                Q.audio.play('main_music1.mp3', {
+                    loop: true
+                });
+
+            });
+
         });
 
         Q.scene("hud", function (stage) {
