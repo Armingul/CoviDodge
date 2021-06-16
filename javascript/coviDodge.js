@@ -20,7 +20,7 @@ var game = function () {
 
     //Q.debug = true;
 
-    Q.load("ranking.png, fondoInf.png, HUD.png, buttonInf.png, applause.mp3, applause.ogg, pinchazo.mp3, pinchazo.ogg, doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, ", function () {
+    Q.load("ranking.png, fondoInf.png, HUD.png, buttonInf.png, applause.mp3, applause.ogg, pinchazo.mp3, pinchazo.ogg, doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, music_ranking.mp3, music_ranking.ogg ", function () {
 
 
 
@@ -535,15 +535,54 @@ var game = function () {
             }));
             buttonRank.on("click", function () {
                 Q.clearStages();
-                Q.stageScene('hud', 1);
-                Q.stageScene('levelEasy');
+                Q.stageScene('rankScene');
                 Q.audio.play('button2.mp3');
-                Q.audio.play('main_music1.mp3', {
+                Q.audio.play('music_ranking.mp3', {
                     loop: true
                 });
 
             });
 
+        });
+
+        Q.scene("rankScene", function (stage) {
+            Q.audio.stop('main_music1.mp3');
+            //Q.audio.play('music_ranking.mp3');
+
+            var container = stage.insert(new Q.UI.Container({
+                x: Q.width / 2,
+                y: Q.height / 2,
+                border: true,
+                fill: "rgba(0,0,0,0.5)"
+            }));
+
+
+            var label = container.insert(new Q.UI.Text({
+                x: -100,
+                y: 0,
+                color: "#FF0000",
+                label: "Nivel Fácil: " //+ ranking.easy
+            }));
+            var label1 = container.insert(new Q.UI.Text({
+                x: 0,
+                y: 100,
+                color: "#FF0000",
+                label: "Nivel Normal: " //+ ranking.easy
+            }));
+            var label2 = container.insert(new Q.UI.Text({
+                x: 100,
+                y: 200,
+                color: "#FF0000",
+                label: "Nivel Difícil: " //+ ranking.easy
+            }));
+            var label3 = container.insert(new Q.UI.Text({
+                x: 200,
+                y: 300,
+                color: "#FF0000",
+                label: "Nivel Infinito: " //+ ranking.easy
+            }));
+
+            container.fit(20);
         });
 
         Q.scene("hud", function (stage) {
