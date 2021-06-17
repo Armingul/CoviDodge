@@ -9,7 +9,7 @@ var game = function () {
         .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX,Audio")
         // Maximize this game to whatever the size of the browser is
         .setup({
-            maximize: true,
+            //maximize: true,
             scaleToFit: true,
             width: 1200,
             height: 612
