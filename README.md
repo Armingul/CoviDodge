@@ -76,4 +76,5 @@ Para la realización del proyecto se han utilizado los siguientes recursos:
 ### Música y sonidos
 * [Youtube](https://www.youtube.com/)
 
-[![Video gameplay]](https://www.youtube.com/watch?v=yhVfo0Pq-Qc&ab_channel=JORGEMILL%C3%81NGARC%C3%8DA)
+## Gameplay
+[![Video]](https://www.youtube.com/watch?v=yhVfo0Pq-Qc&ab_channel=JORGEMILL%C3%81NGARC%C3%8DA)
