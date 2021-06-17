@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="300" height="18" tilewidth="34" tileheight="34" infinite="0" nextlayerid="8" nextobjectid="463">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="300" height="18" tilewidth="34" tileheight="34" infinite="0" nextlayerid="8" nextobjectid="464">
  <tileset firstgid="1" name="jeringa" tilewidth="150" tileheight="270" tilecount="1" columns="1">
   <image source="../images/jerginga.png" trans="ff00ff" width="150" height="270"/>
   <tile id="0">
@@ -102,5 +102,6 @@
   <object id="459" gid="2" x="8075.37" y="650" width="100" height="100"/>
   <object id="460" gid="2" x="8535.37" y="240.667" width="100" height="100"/>
   <object id="461" gid="2" x="8832.7" y="510" width="100" height="100"/>
+  <object id="463" gid="1" x="9289.04" y="444.333" width="150" height="270"/>
  </objectgroup>
 </map>
