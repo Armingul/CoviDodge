@@ -20,7 +20,7 @@ var game = function () {
 
     //Q.debug = true;
 
-    Q.load("ranking.png, informe.png, fondoInf.png, HUD.png, buttonInf.png, applause.mp3, applause.ogg, pinchazo.mp3, pinchazo.ogg, doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, music_ranking.mp3, music_ranking.ogg ", function () {
+    Q.load("ranking.png, informe.png, fondoInf.png, HUD.png, buttonInf.png, applause.mp3, applause.ogg, pinchazo.mp3, pinchazo.ogg, doctor.json, virusR.json, covidRojo.png, buttonHard.png, buttonEasy.png, buttonMedio.png, daddy.png, daddy.json,covidAzul.png, covidVerde.png, virusA.json ,virusV.json, jerginga.png, hospital.png, button2.mp3, button2.ogg, main_music1.mp3, main_music1.ogg, hit3.mp3, hit3.ogg, music_level_complete.mp3, music_level_complete.ogg, music_ranking.mp3, music_ranking.ogg, credit_music.mp3, credit_music.ogg ", function () {
 
 
 
@@ -44,6 +44,56 @@ var game = function () {
             }
         });
 
+
+        //Credits
+        Q.scene("creditos",function(stage) {
+            var container = container = stage.insert(new Q.UI.Container({
+                x: Q.width/2, y: 5, fill: "rgba(0,0,0,0.5)"
+            })); 
+            
+            var Autores = container.insert(new Q.UI.Text({
+                x: 10,
+                y: 230 ,
+                size: 20,
+                color: "#FFFFFF",
+                label: "Realizado por: Carlos González Torres, Jorge Millán García, Sergio Villarroel Fernández"
+
+            }));
+            var inspirado = container.insert(new Q.UI.Text({
+                x: 10,
+                y: 280 ,
+                size: 15,
+                color: "#FFFFFF",
+                label: "Inspirado en el juego flappy birds."
+
+            }));
+            var Spritess = container.insert(new Q.UI.Text({
+                x: 10,
+                y: 300 ,
+                size: 15,
+                color: "#FFFFFF",
+                label: "Sprites extraídos de: https://www.spriters-resource.com/"
+
+            }));
+            var button = container.insert(new Q.UI.Button({
+                x: 10,
+                y: 400,
+                fill: "#CCCCCC",
+                label: "Menu"
+            }));
+
+            button.on("click", function () {
+                Q.audio.stop();
+                Q.clearStages();
+                Q.stageScene('title-screen', 1);
+                Q.state.p.score = 0;
+                Q.audio.play('button2.mp3');
+
+            });
+
+            container.fit(20);
+            stage.insert(new Q.Sprite({scale:1,x:0,y:0, cy:0}),container);
+        });
 
         Q.Sprite.extend("Player", {
 
@@ -657,6 +707,29 @@ var game = function () {
                 Q.stageScene('rankScene');
                 Q.audio.play('button2.mp3');
                 Q.audio.play('music_ranking.mp3', {
+                    loop: true
+                });
+
+            });
+
+            var container2 = stage.insert(new Q.UI.Container({
+                x: 50,
+                y: 50,
+                w: 10,
+                h: 10
+            }));
+
+            var buttonCredit = container2.insert(new Q.UI.Button({
+                label: "Créditos",
+                y: 0,
+                x: 0,
+                fill: "#1C00ff00"
+            }));
+            buttonCredit.on("click", function () {
+                Q.clearStages();
+                Q.stageScene('creditos');
+                Q.audio.play('button2.mp3');
+                Q.audio.play('credit_music.mp3', {
                     loop: true
                 });
 
