@@ -355,27 +355,26 @@ var game = function () {
             if (Q.level == "Modo facil") {
                 if (DATA.easy < parseInt(Q.text.p.label)){
                     DATA.easy = parseInt(Q.text.p.label);
-                    Q.record=DATA.easy;
                 }
-                    
+                Q.record=DATA.easy;
             }
             if (Q.level == "Modo normal") {
                 if (DATA.normal < parseInt(Q.text.p.label)){
                     DATA.normal = parseInt(Q.text.p.label);
-                    Q.record=DATA.normal;
                 }
+                Q.record=DATA.normal;
             }
             if (Q.level == "Modo dificil") {
                 if (DATA.dificult < parseInt(Q.text.p.label)){
                     DATA.dificult = parseInt(Q.text.p.label);
-                    Q.record=DATA.dificult;
                 }   
+                Q.record=DATA.dificult;
             }
             if (Q.level == "Modo infinito") {
                 if (DATA.infinite < parseInt(Q.text.p.label)){
                     DATA.infinite = parseInt(Q.text.p.label);
-                    Q.record=DATA.infinite;
                 }
+                Q.record=DATA.infinite;
             }
 
             console.log(Q.level + " " + Q.record);
@@ -454,27 +453,27 @@ var game = function () {
             if (Q.level == "Modo facil") {
                 if (DATA.easy < parseInt(Q.text.p.label)){
                     DATA.easy = parseInt(Q.text.p.label);
-                    Q.record=DATA.easy;
                 }
+                Q.record=DATA.easy;
                     
             }
             if (Q.level == "Modo normal") {
                 if (DATA.normal < parseInt(Q.text.p.label)){
                     DATA.normal = parseInt(Q.text.p.label);
-                    Q.record=DATA.normal;
                 }
+                Q.record=DATA.normal;
             }
             if (Q.level == "Modo dificil") {
                 if (DATA.dificult < parseInt(Q.text.p.label)){
                     DATA.dificult = parseInt(Q.text.p.label);
-                    Q.record=DATA.dificult;
                 }   
+                Q.record=DATA.dificult;
             }
             if (Q.level == "Modo infinito") {
                 if (DATA.infinite < parseInt(Q.text.p.label)){
                     DATA.infinite = parseInt(Q.text.p.label);
-                    Q.record=DATA.infinite;
                 }
+                Q.record=DATA.infinite;
             }
 
             console.log(Q.level + " " + Q.record);
