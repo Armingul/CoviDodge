@@ -108,27 +108,7 @@ var game = function () {
                         collision.obj.p.dead = true;
                         collision.obj.p.vy = -500;
                         collision.obj.del("platformerControls");
-                        var nameee = this.stage.scene.name;
-                        if (nameee == "levelEasy") {
-                            if (DATA.easy < parseInt(Q.text.p.label)){
-                                DATA.easy = parseInt(Q.text.p.label);
-                                Q.record=DATA.easy;
-                            }
-                                
-                        }
-                        if (nameee == "levelNormal") {
-                            if (DATA.normal < parseInt(Q.text.p.label))
-                                DATA.normal = parseInt(Q.text.p.label);
-                        }
-                        if (nameee == "levelHard") {
-                            if (DATA.dificult < parseInt(Q.text.p.label))
-                                DATA.dificult = parseInt(Q.text.p.label);
-                        }
-                        if (nameee == "levelInfinito") {
-                            if (DATA.infinite < parseInt(Q.text.p.label))
-                                DATA.infinite = parseInt(Q.text.p.label);
-                        }
-
+                
                         Q.stageScene("endGame", 1, {
                             label: "Te has contagiado : ("
                         });
@@ -321,7 +301,34 @@ var game = function () {
             Q.audio.stop('main_music1.mp3');
             Q.audio.play('hit3.mp3');
 
-            console.log(Q.level + " " + record);
+            
+            if (Q.level == "Modo facil") {
+                if (DATA.easy < parseInt(Q.text.p.label)){
+                    DATA.easy = parseInt(Q.text.p.label);
+                    Q.record=DATA.easy;
+                }
+                    
+            }
+            if (Q.level == "Modo normal") {
+                if (DATA.normal < parseInt(Q.text.p.label)){
+                    DATA.normal = parseInt(Q.text.p.label);
+                    Q.record=DATA.normal;
+                }
+            }
+            if (Q.level == "Modo dificil") {
+                if (DATA.dificult < parseInt(Q.text.p.label)){
+                    DATA.dificult = parseInt(Q.text.p.label);
+                    Q.record=DATA.dificult;
+                }   
+            }
+            if (Q.level == "Modo infinito") {
+                if (DATA.infinite < parseInt(Q.text.p.label)){
+                    DATA.infinite = parseInt(Q.text.p.label);
+                    Q.record=DATA.infinite;
+                }
+            }
+
+            console.log(Q.level + " " + Q.record);
             var container = stage.insert(new Q.UI.Container({
                 x: 600,
                 y: 130,
@@ -341,7 +348,7 @@ var game = function () {
                 x: 10,
                 y: 200 ,
                 color: "#FFFFFF",
-                label: "Record personal: " + record
+                label: "Record personal: " + Q.record
             }));
 
             var label = container.insert(new Q.UI.Text({
