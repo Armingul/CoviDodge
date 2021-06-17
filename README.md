@@ -60,3 +60,20 @@ Los integrantes del equipo son:
 * Sergio Villarroel Fernández (carga de trabajo 33,33%)
 
 ## Referencias 
+
+Para la realización del proyecto se han utilizado los siguientes recursos: 
+
+### Librerías
+* [Quintus](http://www.html5quintus.com/)
+
+### Recursos gráficos
+* [spriters-resource](https://www.spriters-resource.com/)
+* [Pinterest](https://www.pinterest.es/)
+* [Thenounproject](thenounproject.com)
+* [Iconos8](https://iconos8.es/)
+* [Fmfspain](https://www.fmfspain.com/2020/03/como-explicar-a-los-ninos-lo-que-es-el-coronavirus/)
+
+### Música y sonidos
+* [Youtube](https://www.youtube.com/)
+
+[![Watch the video]](https://www.youtube.com/watch?v=yhVfo0Pq-Qc&ab_channel=JORGEMILL%C3%81NGARC%C3%8DA)
