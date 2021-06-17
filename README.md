@@ -78,3 +78,6 @@ Para la realización del proyecto se han utilizado los siguientes recursos:
 
 ## Gameplay
 [![Watch the video](https://img.youtube.com/vi/yhVfo0Pq-Qc/maxresdefault.jpg)](https://www.youtube.com/watch?v=yhVfo0Pq-Qc)
+
+## Web del juego
+[CoviDodge](https://armingul.github.io/CoviDodge/)
