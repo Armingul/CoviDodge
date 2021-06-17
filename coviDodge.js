@@ -69,7 +69,7 @@ var game = function () {
 
 
                     if (this.p.x != 50 && this.p.y != 380 && this.p.win == false) this.p.gravity = 1;
-                    if (this.p.y > 612) {
+                    if (this.p.y > 612 || this.p.y < 0) {
                         this.play("die");
                         this.p.dead = true;
                         Q.stageScene("endGame", 1, {
