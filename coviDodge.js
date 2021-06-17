@@ -614,7 +614,7 @@ var game = function () {
                 fill: "#1C00ff00"
             }));
             buttonEasy.on("click", function () {
-                Q.level="Modo facil"
+                Q.level="Modo facil";
                 Q.clearStages();
                 Q.stageScene('hud', 1);
                 Q.stageScene('levelEasy');
@@ -633,7 +633,7 @@ var game = function () {
 
             }));
             buttonMedio.on("click", function () {
-                Q.level="Modo normal"
+                Q.level="Modo normal";
                 Q.clearStages();
                 Q.stageScene('hud', 1);
                 Q.stageScene('levelNormal');
@@ -653,7 +653,7 @@ var game = function () {
 
             }));
             buttonDificil.on("click", function () {
-                Q.level="Modo dificil"
+                Q.level="Modo dificil";
                 Q.clearStages();
                 Q.stageScene('hud', 1);
                 Q.stageScene('levelHard');
@@ -673,7 +673,7 @@ var game = function () {
 
             }));
             buttonInf.on("click", function () {
-                Q.level="Modo infinito"
+                Q.level="Modo infinito";
                 Q.pos = 600;
                 Q.clearStages();
                 Q.stageScene('hud', 1);
