@@ -77,4 +77,4 @@ Para la realización del proyecto se han utilizado los siguientes recursos:
 * [Youtube](https://www.youtube.com/)
 
 ## Gameplay
-![Video](https://www.youtube.com/watch?v=yhVfo0Pq-Qc&ab_channel=JORGEMILL%C3%81NGARC%C3%8DA)
+[![Watch the video](https://img.youtube.com/vi/yhVfo0Pq-Qc/maxresdefault.jpg)](https://www.youtube.com/watch?v=yhVfo0Pq-Qc)
