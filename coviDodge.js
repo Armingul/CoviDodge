@@ -109,23 +109,26 @@ var game = function () {
                         collision.obj.p.vy = -500;
                         collision.obj.del("platformerControls");
                         var nameee = this.stage.scene.name;
-                        if(nameee == "levelEasy"){
-                            if(DATA.easy < parseInt(Q.text.p.label))
-                                DATA.easy = parseInt (Q.text.p.label);
+                        if (nameee == "levelEasy") {
+                            if (DATA.easy < parseInt(Q.text.p.label)){
+                                DATA.easy = parseInt(Q.text.p.label);
+                                Q.record=DATA.easy;
+                            }
+                                
                         }
-                        if(nameee == "levelNormal"){
-                            if(DATA.normal < parseInt(Q.text.p.label))
-                                DATA.normal = parseInt (Q.text.p.label);
+                        if (nameee == "levelNormal") {
+                            if (DATA.normal < parseInt(Q.text.p.label))
+                                DATA.normal = parseInt(Q.text.p.label);
                         }
-                        if(nameee == "levelHard"){
-                            if(DATA.dificult < parseInt(Q.text.p.label))
-                                DATA.dificult = parseInt (Q.text.p.label);
+                        if (nameee == "levelHard") {
+                            if (DATA.dificult < parseInt(Q.text.p.label))
+                                DATA.dificult = parseInt(Q.text.p.label);
                         }
-                        if(nameee == "levelInfinito"){
-                            if(DATA.infinite < parseInt(Q.text.p.label))
-                                DATA.infinite = parseInt (Q.text.p.label);
+                        if (nameee == "levelInfinito") {
+                            if (DATA.infinite < parseInt(Q.text.p.label))
+                                DATA.infinite = parseInt(Q.text.p.label);
                         }
-                        
+
                         Q.stageScene("endGame", 1, {
                             label: "Te has contagiado : ("
                         });
@@ -311,29 +314,48 @@ var game = function () {
             step: function (dt) { }
         });
 
+        Q.level="";
+        Q.record=0;
+
         Q.scene("endGame", function (stage) {
             Q.audio.stop('main_music1.mp3');
             Q.audio.play('hit3.mp3');
 
+            console.log(Q.level + " " + record);
             var container = stage.insert(new Q.UI.Container({
-                x: Q.width / 2,
-                y: Q.height / 2,
+                x: 600,
+                y: 130,
                 border: true,
                 fill: "rgba(0,0,0,0.5)"
             }));
 
-            var button = container.insert(new Q.UI.Button({
-                x: 0,
-                y: 0,
-                fill: "#CCCCCC",
-                label: "Menu"
+          
+            var puntuacion = container.insert(new Q.UI.Text({
+                x: 10,
+                y: 150 ,
+                color: "#FFFFFF",
+                label: "Record actual: " + Q.text.p.label
+            }));
+
+            var puntuacionRecord = container.insert(new Q.UI.Text({
+                x: 10,
+                y: 200 ,
+                color: "#FFFFFF",
+                label: "Record personal: " + record
             }));
 
             var label = container.insert(new Q.UI.Text({
                 x: 10,
-                y: -10 - button.p.h,
-                color: "#FF0000",
+                y: 100 ,
+                color: "#FFFFFF",
                 label: stage.options.label
+            }));
+
+            var button = container.insert(new Q.UI.Button({
+                x: 10,
+                y: 260,
+                fill: "#CCCCCC",
+                label: "Menu"
             }));
 
             button.on("click", function () {
@@ -388,7 +410,7 @@ var game = function () {
         /*Modo infinito */
 
         Q.virus = [];
-        Q.pos =600;
+        Q.pos = 600;
         Q.GameObject.extend('VirusCreator', {
             init: function () {
                 this.p = {
@@ -412,11 +434,11 @@ var game = function () {
 
                     //this.stage.insert(new Q.covidAzul({ x: Q.personaje.p.x + 600, y: r + 20 }));
 
-                //if(Q.crea % 2 == 0){
-                this.stage.insert(new Q.covidAzul({ x: Q.personaje.p.x + Q.pos, y: r + 20 }));
-                Q.pos+=150;
-                //}
-                
+                    //if(Q.crea % 2 == 0){
+                    this.stage.insert(new Q.covidAzul({ x: Q.personaje.p.x + Q.pos, y: r + 20 }));
+                    Q.pos += 150;
+                    //}
+
 
                 }
                 console.log("La variable vale: " + Q.crea);
@@ -466,6 +488,7 @@ var game = function () {
                 fill: "#1C00ff00"
             }));
             buttonEasy.on("click", function () {
+                Q.level="Modo facil"
                 Q.clearStages();
                 Q.stageScene('hud', 1);
                 Q.stageScene('levelEasy');
@@ -484,6 +507,7 @@ var game = function () {
 
             }));
             buttonMedio.on("click", function () {
+                Q.level="Modo normal"
                 Q.clearStages();
                 Q.stageScene('hud', 1);
                 Q.stageScene('levelNormal');
@@ -503,6 +527,7 @@ var game = function () {
 
             }));
             buttonDificil.on("click", function () {
+                Q.level="Modo dificil"
                 Q.clearStages();
                 Q.stageScene('hud', 1);
                 Q.stageScene('levelHard');
@@ -522,6 +547,7 @@ var game = function () {
 
             }));
             buttonInf.on("click", function () {
+                Q.level="Modo infinito"
                 Q.pos = 600;
                 Q.clearStages();
                 Q.stageScene('hud', 1);
