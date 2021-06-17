@@ -756,9 +756,7 @@ var game = function () {
         Q.scene("levelEasy", function (stage) {
 
             Q.stageTMX("levelFacil.tmx", stage);
-            // Create the player and add them to the stage
-            // var doctor = new Q.Doctor({x: 3500, y:350});
-            // stage.insert(doctor);
+
             var player = stage.insert(new Q.Player());
             stage.add("viewport").follow(player, {
                 x: true,
@@ -777,9 +775,6 @@ var game = function () {
         Q.scene("levelNormal", function (stage) {
 
             Q.stageTMX("levelNormal.tmx", stage);
-            // Create the player and add them to the stage
-            // var doctor = new Q.Doctor({x: 1747, y:439});
-            // stage.insert(doctor);
 
             var player = stage.insert(new Q.Player());
             stage.add("viewport").follow(player, {
@@ -800,8 +795,8 @@ var game = function () {
             Q.stageTMX("levelDificil.tmx", stage);
             // Create the player and add them to the stage
             // Create the player and add them to the stage
-            //  var doctor = new Q.Doctor({x: 1747, y:439});
-            // stage.insert(doctor);
+            var doctor = new Q.Doctor({x: 9502.20, y:494.20});
+            stage.insert(doctor);
 
             var player = stage.insert(new Q.Player());
             stage.add("viewport").follow(player, {
